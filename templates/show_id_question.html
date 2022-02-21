@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Question nr. {{ question["id"]}}</title>
+    </head>
+    <body>
+        <h1>Question nr. {{ question["id"]}}</h1>
+        <strong>{{ question["title"]}}</strong>
+        <p>{{ question["message"]}}</p><br>
+        <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a>
+        <table>
+            <tr>
+                <th>Answer ID</th>
+                <th>Submission Time</th>
+                <th>Vote Number</th>
+                <th>Question ID</th>
+                <th>Answer Message</th>
+                <th>Image</th>
+            </tr>
+            {% for answer_item in answers %}
+            <tr>
+            {% for item in answer_item.values() %}
+                 <td>
+            {{item}}
+                </td>
+            {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
