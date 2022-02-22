@@ -33,12 +33,8 @@ def add_question():
     elif request.method == "POST":
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
         data_manager.add_new_question(new_question)
-<<<<<<< HEAD
         return redirect('/question/' + new_question.get('id'))
-=======
-        return redirect('/question', ['question_id'1])
 
->>>>>>> 7801ce1fdc72d18c62f0b4adfbd4cbd7abe695f3
 
 if __name__ == "__main__":
     app.run()
