@@ -30,11 +30,10 @@ def add_question():
         vote_number = 0
         return render_template('add-question.html', new_question_id=new_question_id,
                                submission_time=submission_time, view_number=view_number, vote_number=vote_number)
-    if request.method == 'POST':
+    elif request.method == "POST":
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
         data_manager.add_new_question(new_question)
-        return redirect("/")
-
+        return redirect('/question/' + new_question.get('id'))
 
 if __name__ == "__main__":
     app.run()
