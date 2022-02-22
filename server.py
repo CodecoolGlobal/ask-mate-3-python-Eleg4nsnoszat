@@ -12,7 +12,7 @@ def list_question_page():
     return render_template('list.html', all_questions=all_questions)
 
 
-@app.route('/question/<question_id>', methods=['GET', 'POST'])
+@app.route('/question/{question_id}', methods=['GET', 'POST'])
 def show_question_answers(question_id):
     all_questions = data_manager.get_all_questions()
     question = all_questions[int(question_id) - 1]
@@ -24,16 +24,16 @@ def show_question_answers(question_id):
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == "GET":
-        new_question_id = data_manager.get_new_question_id()
+        question_id = data_manager.get_new_question_id()
         submission_time = data_manager.get_submission_time()
         view_number = 0
         vote_number = 0
-        return render_template('add-question.html', new_question_id=new_question_id,
+        return render_template('add-question.html', question_id=question_id,
                                submission_time=submission_time, view_number=view_number, vote_number=vote_number)
     if request.method == 'POST':
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
         data_manager.add_new_question(new_question)
-        return redirect("/")
+        return redirect('/question', ['question_id'1])
 
 
 if __name__ == "__main__":
