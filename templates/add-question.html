@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Add New Question</title>
+    </head>
+    <body>
+        <h1>Add New Question</h1>
+    <form action="/add-question" method="post">
+        <input type="hidden" name="id" value="{{new_question_id}}"><br>
+        <input type="hidden" name="submission_time" value="{{submission_time}}"><br>
+        <input type="hidden" name="view_number" value="{{view_number}}"><br>
+        <input type="hidden" name="vote_number" value="{{vote_number}}"><br>
+        <label for="title">Question Title:</label><br>
+            <input type="text" name="title" size="20" id="title" minlength="5" required><br>
+            <br><label for="message">Question message:</label><br>
+                <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
+            <br><label for="image">image:</label><br>
+                <textarea name="image" rows="4" cols="40" id="image" ></textarea><br>
+            <br><button type="submit">Send</button>
+        </form>
+    </body>
+</html>
