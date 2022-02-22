@@ -15,7 +15,7 @@ def list_question_page():
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def show_question_answers(question_id):
     all_questions = data_manager.get_all_questions()
-    question = all_questions[int(question_id)]
+    question = all_questions[int(question_id) - 1]
     answers = data_manager.get_answers(question_id)
     if request.method == 'GET':
         return render_template('show_id_question.html', question=question, answers=answers)
