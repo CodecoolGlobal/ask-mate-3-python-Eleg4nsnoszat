@@ -44,3 +44,9 @@ def add_new_question(new_question):
 
 def add_new_answer(new_answer):
     connection.add_new(DATA_FILE_PATH_ANSWER, new_answer, DATA_HEADER_ANSWER)
+
+def delete_question(question_id):
+    connection.delete(DATA_FILE_PATH_QUESTION, question_id, DATA_HEADER_QUESTION, 'id')
+
+def delete_answer(question_id):
+    connection.delete(DATA_FILE_PATH_ANSWER, question_id, DATA_HEADER_ANSWER, 'question_id')

@@ -15,7 +15,10 @@ def list_question_page():
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def show_question_answers(question_id):
     all_questions = data_manager.get_all_questions()
-    question = all_questions[int(question_id) - 1]
+    question = None
+    for question_row in all_questions:
+        if question_row.get('id') == question_id:
+            question = question_row
     answers = data_manager.get_answers(question_id)
     if request.method == 'GET':
         for answer in answers:
@@ -50,6 +53,11 @@ def new_answer(question_id):
         data_manager.add_new_answer(new_answer)
         return redirect('/question/' + question_id)
 
+@app.route("/question/<question_id>/delete", methods=["GET", "POST"])
+def delete_question(question_id):
+    data_manager.delete_question(question_id)
+    data_manager.delete_answer(question_id)
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run()
