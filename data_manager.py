@@ -50,3 +50,6 @@ def delete_question(question_id):
 
 def delete_answer(question_id):
     connection.delete(DATA_FILE_PATH_ANSWER, question_id, DATA_HEADER_ANSWER, 'question_id')
+
+def edit_question(question_id, edit_key, edit_value):
+    connection.edit(DATA_FILE_PATH_QUESTION, DATA_HEADER_QUESTION, question_id, edit_key, edit_value)

@@ -59,5 +59,24 @@ def delete_question(question_id):
     data_manager.delete_answer(question_id)
     return redirect('/')
 
+
+@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+def edit_question(question_id):
+    all_questions = data_manager.get_all_questions()
+    question = None
+    for question_row in all_questions:
+        if question_row.get('id') == question_id:
+            question = question_row
+    question['submission_time'] = data_manager.get_submission_time()
+    if request.method == "GET":
+        return render_template('edit.html', id=question['id'], submission_time=question['submission_time'],
+                               vote_number=question['vote_number'], view_number=question['view_number'],
+                               question=question)
+    elif request.method == "POST":
+        data_manager.edit_question(question_id, 'title', request.form['title'])
+        data_manager.edit_question(question_id, 'message', request.form['message'])
+        return redirect('/question/' + question['id'])
+
+
 if __name__ == "__main__":
     app.run()

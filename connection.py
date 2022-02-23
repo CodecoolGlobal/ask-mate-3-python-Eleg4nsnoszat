@@ -30,3 +30,14 @@ def delete(filename, delete_id, headers, delete_key):
                 if key == delete_key and value != delete_id:
                     writer.writerow(row)
 
+def edit(filename, headers, question_id, edit_key, edit_value):
+    all_items = get_all(filename)
+    with open(filename, "w", newline="") as csv_file:
+        writer = csv.DictWriter(csv_file, headers)
+        writer.writeheader()
+        for row in all_items:
+            for key, value in row.items():
+                if key == 'id' and value == question_id:
+                    row[edit_key] = edit_value
+            writer.writerow(row)
+

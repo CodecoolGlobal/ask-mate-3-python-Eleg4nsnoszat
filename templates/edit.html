@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Question nr. {{ question['id'] }}</title>
+    </head>
+    <body>
+        <h1>Edit Question nr. {{ question['id'] }}</h1>
+    <form action="/question/{{ question['id'] }}/edit" method="post">
+        <input type="hidden" name="id" value="{{ id }}"><br>
+        <input type="hidden" name="submission_time" value="{{question['submission_time'] }}"><br>
+        <input type="hidden" name="view_number" value="{{question['view_number'] }}"><br>
+        <input type="hidden" name="vote_number" value="{{question['vote_number'] }}"><br>
+        <label for="title">Question Title:</label><br>
+            <input type="text" name="title" size="20" id="title" value="{{ question['title']}}" minlength="5" required><br>
+            <br><label for="message">Question message:</label><br>
+                <textarea name="message" rows="4" cols="40" id="message" required>{{ question['message']}}</textarea><br>
+            <br><button type="submit">Send</button>
+        </form>
+    </body>
+</html>
