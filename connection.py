@@ -20,6 +20,7 @@ def add_new(filename, new_item, headers):
         csv_writer = csv.DictWriter(csv_file, headers)
         csv_writer.writerow(new_item)
 
+
 def delete(filename, delete_id, headers, delete_key):
     all_items = get_all(filename)
     with open(filename, "w", newline="") as csv_file:
@@ -29,6 +30,7 @@ def delete(filename, delete_id, headers, delete_key):
             for key, value in row.items():
                 if key == delete_key and value != delete_id:
                     writer.writerow(row)
+
 
 def edit(filename, headers, question_id, edit_key, edit_value):
     all_items = get_all(filename)

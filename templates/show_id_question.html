@@ -25,6 +25,9 @@
                  {{ item }}
                 </td>
             {% endfor %}
+            <td>
+                <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
+            </td>
             </tr>
             {% endfor %}
         </table>

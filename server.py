@@ -78,5 +78,17 @@ def edit_question(question_id):
         return redirect('/question/' + question['id'])
 
 
+@app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
+def delete_answer(answer_id):
+    all_answer = data_manager.get_all_answers()
+    answer = None
+    for answer_row in all_answer:
+        if answer_row.get('id') == answer_id:
+            answer = answer_row
+    question_id = answer['question_id']
+    data_manager.delete_answer(answer_id)
+    return redirect('/question/' + question_id)
+
+
 if __name__ == "__main__":
     app.run()

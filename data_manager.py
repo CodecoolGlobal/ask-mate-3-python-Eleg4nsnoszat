@@ -37,6 +37,9 @@ def get_answers(question_id):
     answers = [answer for answer in all_answers if answer["question_id"] == question_id]
     return answers
 
+def get_all_answers():
+    all_answers = connection.get_all(DATA_FILE_PATH_ANSWER)
+    return all_answers
 
 def add_new_question(new_question):
     connection.add_new(DATA_FILE_PATH_QUESTION, new_question, DATA_HEADER_QUESTION)
@@ -45,11 +48,14 @@ def add_new_question(new_question):
 def add_new_answer(new_answer):
     connection.add_new(DATA_FILE_PATH_ANSWER, new_answer, DATA_HEADER_ANSWER)
 
+
 def delete_question(question_id):
     connection.delete(DATA_FILE_PATH_QUESTION, question_id, DATA_HEADER_QUESTION, 'id')
 
-def delete_answer(question_id):
-    connection.delete(DATA_FILE_PATH_ANSWER, question_id, DATA_HEADER_ANSWER, 'question_id')
+
+def delete_answer(answer_id):
+    connection.delete(DATA_FILE_PATH_ANSWER, answer_id, DATA_HEADER_ANSWER, 'id')
+
 
 def edit_question(question_id, edit_key, edit_value):
     connection.edit(DATA_FILE_PATH_QUESTION, DATA_HEADER_QUESTION, question_id, edit_key, edit_value)
