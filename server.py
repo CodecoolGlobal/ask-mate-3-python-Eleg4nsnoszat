@@ -18,6 +18,8 @@ def show_question_answers(question_id):
     question = all_questions[int(question_id) - 1]
     answers = data_manager.get_answers(question_id)
     if request.method == 'GET':
+        for answer in answers:
+            answer['submission_time'] = data_manager.get_display_submission_time(int(answer['submission_time']))
         return render_template('show_id_question.html', question=question, answers=answers)
 
 
@@ -34,6 +36,19 @@ def add_question():
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
         data_manager.add_new_question(new_question)
         return redirect('/question/' + new_question.get('id'))
+
+@app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
+def new_answer(question_id):
+    answer_id = data_manager.get_new_answer_id()
+    submission_time = data_manager.get_submission_time()
+    vote_number = 0
+    if request.method == "GET":
+        return render_template('new-answer.html', question_id=question_id, id=answer_id,
+                               submission_time=submission_time, vote_number=vote_number)
+    elif request.method == "POST":
+        new_answer = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_ANSWER}
+        data_manager.add_new_answer(new_answer)
+        return redirect('/question/' + question_id)
 
 
 if __name__ == "__main__":

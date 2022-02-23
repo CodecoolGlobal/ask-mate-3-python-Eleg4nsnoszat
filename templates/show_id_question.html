@@ -11,7 +11,6 @@
         <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a>
         <table>
             <tr>
-                <th>Answer ID</th>
                 <th>Submission Time</th>
                 <th>Vote Number</th>
                 <th>Question ID</th>
@@ -20,9 +19,9 @@
             </tr>
             {% for answer_item in answers %}
             <tr>
-            {% for item in answer_item.values() %}
+            {% for fieldname, item in answer_item.items() if not fieldname == "id" %}
                  <td>
-            {{item}}
+                 {{ item }}
                 </td>
             {% endfor %}
             </tr>

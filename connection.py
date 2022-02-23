@@ -3,8 +3,11 @@ import csv
 
 def get_new_id(filename):
     all_items = get_all(filename)
-    return len(all_items) + 1
-
+    if all_items != None:
+        last_item = all_items[-1]['id']
+        return int(last_item) + 1
+    else:
+        return 1
 
 def get_all(filename):
     with open(filename, newline="") as csv_file:
