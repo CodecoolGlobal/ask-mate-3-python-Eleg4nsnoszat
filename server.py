@@ -41,7 +41,7 @@ def add_question():
         return redirect('/question/' + new_question.get('id'))
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
-def new_answer(question_id):
+def add_new_answer(question_id):
     answer_id = data_manager.get_new_answer_id()
     submission_time = data_manager.get_submission_time()
     vote_number = 0
