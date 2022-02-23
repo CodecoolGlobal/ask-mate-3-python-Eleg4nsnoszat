@@ -9,8 +9,8 @@
         <strong>{{ question["title"]}}</strong>
         <p>{{ question["message"]}}</p><br>
         <a href="/question/{{ question["id"]}}/edit">Edit Question</a><br>
-        <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a>
-        <table>
+        <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a><br>
+        <br><table>
             <tr>
                 <th>Submission Time</th>
                 <th>Vote Number</th>
@@ -28,8 +28,16 @@
             <td>
                 <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
             </td>
+            <td>
+                <a href="/answer/{{ answer_item.get('id')}}/vote-up">Upvote</a>
+            </td>
+            <td>
+                <a href="/answer/{{ answer_item.get('id')}}/vote-down">Downvote</a>
+            </td>
             </tr>
             {% endfor %}
         </table>
+        <br>
+        <a href="/">Back to main Page</a>
     </body>
 </html>

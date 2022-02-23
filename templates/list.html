@@ -32,6 +32,12 @@
             <td>
                 <a href="/question/{{ question["id"] }}/delete">Delete</a>
             </td>
+            <td>
+                <a href="/question/{{ question["id"] }}/vote-up">Upvote</a>
+            </td>
+            <td>
+                <a href="/question/{{ question["id"] }}/vote-down">Downvote</a>
+            </td>
             </tr>
             {% endfor %}
         </table>

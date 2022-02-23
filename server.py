@@ -21,6 +21,10 @@ def show_question_answers(question_id):
             question = question_row
     answers = data_manager.get_answers(question_id)
     if request.method == 'GET':
+        view_number = question['view_number']
+        view_number = int(view_number)
+        view_number += 1
+        data_manager.edit_question(question_id, 'view_number', view_number)
         for answer in answers:
             answer['submission_time'] = data_manager.get_display_submission_time(int(answer['submission_time']))
         return render_template('show_id_question.html', question=question, answers=answers)
@@ -87,6 +91,74 @@ def delete_answer(answer_id):
             answer = answer_row
     question_id = answer['question_id']
     data_manager.delete_answer(answer_id)
+    return redirect('/question/' + question_id)
+
+
+@app.route("/question/<question_id>/vote-up", methods=['GET', 'POST'])
+def vote_up_question(question_id):
+    all_questions = data_manager.get_all_questions()
+    question = None
+    for question_row in all_questions:
+        if question_row.get('id') == question_id:
+            question = question_row
+    if request.method == 'GET':
+        vote_number = question['vote_number']
+        vote_number = int(vote_number)
+        vote_number += 1
+    question['vote_number'] = vote_number
+    data_manager.edit_question(question_id, 'vote_number', vote_number)
+    return redirect('/')
+
+
+@app.route("/question/<question_id>/vote-down", methods=['GET', 'POST'])
+def vote_down_question(question_id):
+    all_questions = data_manager.get_all_questions()
+    question = None
+    for question_row in all_questions:
+        if question_row.get('id') == question_id:
+            question = question_row
+    if request.method == 'GET':
+        vote_number = question['vote_number']
+        vote_number = int(vote_number)
+        if vote_number > 0:
+            vote_number -= 1
+    question['vote_number'] = vote_number
+    data_manager.edit_question(question_id, 'vote_number', vote_number)
+    return redirect('/')
+
+
+@app.route("/answer/<answer_id>/vote-down", methods=['GET', 'POST'])
+def vote_down_answer(answer_id):
+    all_answer = data_manager.get_all_answers()
+    answer = None
+    for answer_row in all_answer:
+        if answer_row.get('id') == answer_id:
+            answer = answer_row
+    if request.method == 'GET':
+        vote_number = answer['vote_number']
+        vote_number = int(vote_number)
+        if vote_number > 0:
+            vote_number -= 1
+    answer['vote_number'] = vote_number
+    data_manager.edit_answer(answer_id, 'vote_number', vote_number)
+    question_id = answer['question_id']
+    return redirect('/question/' + question_id)
+
+
+@app.route("/answer/<answer_id>/vote-up", methods=['GET', 'POST'])
+def vote_up_answer(answer_id):
+    all_answer = data_manager.get_all_answers()
+    answer = None
+    for answer_row in all_answer:
+        if answer_row.get('id') == answer_id:
+            answer = answer_row
+    if request.method == 'GET':
+        vote_number = answer['vote_number']
+        vote_number = int(vote_number)
+        vote_number += 1
+    answer['vote_number'] = vote_number
+    data_manager.edit_answer(answer_id, 'vote_number', vote_number)
+    question_id = answer['question_id']
     return redirect('/question/' + question_id)
 
 
