@@ -82,25 +82,33 @@ def add_question():
                                submission_time=submission_time, view_number=view_number, vote_number=vote_number)
     elif request.method == 'POST':
         picture = request.files['image']
+        if picture.filename:
+            picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION[:-1]}
-        picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
         new_question['image'] = picture.filename
         data_manager.add_new_question(new_question)
         return redirect('/question/' + new_question.get('id'))
 
 
-@app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
+@app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
     answer_id = data_manager.get_new_answer_id()
     submission_time = data_manager.get_submission_time()
     vote_number = 0
-    if request.method == "GET":
+    if request.method == 'GET':
         return render_template('new-answer.html', question_id=question_id, id=answer_id,
                                submission_time=submission_time, vote_number=vote_number)
-    elif request.method == "POST":
-        new_answer = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_ANSWER}
+    elif request.method == 'POST':
+        picture = request.files['image']
+        new_answer = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_ANSWER[:-1]}
+        if picture.filename:
+            picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
+            new_answer['image'] = picture.filename
+        else:
+            new_answer['image'] = ''
         data_manager.add_new_answer(new_answer)
         return redirect('/question/' + question_id)
+
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
@@ -113,7 +121,8 @@ def delete_question(question_id):
     filename = filename.replace(' ', '_')
     data_manager.delete_question(question_id)
     data_manager.delete_answer(question_id, "question_id")
-    os.remove(UPLOAD_FOLDER + filename)
+    if question['image']:
+        os.remove(UPLOAD_FOLDER + filename)
     return redirect('/list')
 
 
@@ -142,7 +151,11 @@ def delete_answer(answer_id):
     for answer_row in all_answer:
         if answer_row.get('id') == answer_id:
             answer = answer_row
+    filename = answer['image']
+    filename = filename.replace(' ', '_')
     question_id = answer['question_id']
+    if answer['image']:
+        os.remove(UPLOAD_FOLDER + filename)
     data_manager.delete_answer(answer_id, "id")
     return redirect('/question/' + question_id)
 

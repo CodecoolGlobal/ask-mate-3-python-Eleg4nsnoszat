@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Add New Answer</h1>
-    <form action="/question/{{ question_id }}/new-answer" method="post">
+    <form action="/question/{{ question_id }}/new-answer" method="post" enctype="multipart/form-data">
         <input type="hidden" name="question_id" value="{{question_id}}"><br>
         <input type="hidden" name="id" value="{{id}}"><br>
         <input type="hidden" name="submission_time" value="{{submission_time}}"><br>
@@ -14,7 +14,7 @@
             <br><label for="message">Answer message:</label><br>
                 <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
             <br><label for="image">image:</label><br>
-                <textarea name="image" rows="4" cols="40" id="image" ></textarea><br>
+                <input type="file" name="image" accept="image/*"><br>
             <br><button type="submit">Send</button>
         </form>
     </body>
