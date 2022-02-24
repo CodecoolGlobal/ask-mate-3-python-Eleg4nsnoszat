@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import data_manager
+import 
 
 app = Flask(__name__)
 
@@ -43,6 +44,7 @@ def add_question():
         new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
         data_manager.add_new_question(new_question)
         return redirect('/question/' + new_question.get('id'))
+
 
 @app.route("/question/<question_id>/new-answer", methods=['GET', 'POST'])
 def add_new_answer(question_id):
@@ -160,6 +162,27 @@ def vote_up_answer(answer_id):
     data_manager.edit_answer(answer_id, 'vote_number', vote_number)
     question_id = answer['question_id']
     return redirect('/question/' + question_id)
+
+
+def filter_data(all_items, order_by='', order_direction=None):
+    order_by = order_by.lower()
+    rows = [d for d in all_items if order_by in  d[order_by]]
+    if order_direction == 'desc':
+        return sorted(rows, key=itemgetter(order_by), reverse=True)
+    elif order_direction == 'asc':
+        return sorted(rows, key=itemgetter(order_by))
+    else:
+        return sorted(rows, key=itemgetter(order_by))
+
+
+@app.route("/results")
+def results():
+    _sortby =  request.args.get('sortby')
+    _lastname =  request.args.get('lastname')
+    peeps = filter_data(lastname=_lastname, sortby=_sortby)
+    html = render_template('results.html', lastname=_lastname,
+                           legislators=peeps, sortby=_sortby)
+    return html
 
 
 if __name__ == "__main__":
