@@ -34,6 +34,9 @@ def list_question_page():
         all_questions = filter_data(all_question, order_by=_order_by, order_direction=_order_direction)
         for question in all_questions:
             question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+            filename = question['image']
+            filename = filename.replace(' ', '_')
+            question['image'] = filename
             for key, value in question.items():
                 if isinstance(value, str):
                     question[key] = value.capitalize()
@@ -43,6 +46,9 @@ def list_question_page():
     else:
         for question in all_question:
             question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+            filename = question['image']
+            filename = filename.replace(' ', '_')
+            question['image'] = filename
             for key, value in question.items():
                 if isinstance(value, str):
                     question[key] = value.capitalize()
@@ -102,8 +108,8 @@ def add_new_answer(question_id):
         picture = request.files['image']
         new_answer = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_ANSWER[:-1]}
         if picture.filename:
+            new_answer['image'] = picture.filename.replace(' ', '_')
             picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
-            new_answer['image'] = picture.filename
         else:
             new_answer['image'] = ''
         data_manager.add_new_answer(new_answer)
@@ -117,12 +123,17 @@ def delete_question(question_id):
     for question_row in all_questions:
         if question_row.get('id') == question_id:
             question = question_row
-    filename = question['image']
-    filename = filename.replace(' ', '_')
+    counter = 0
+    for item in all_questions:
+        if item['image'] == question['image']:
+            counter += 1
+    if counter == 1:
+        filename = question['image']
+        filename = filename.replace(' ', '_')
+        question['image'] = filename
+        os.remove(UPLOAD_FOLDER + filename)
     data_manager.delete_question(question_id)
     data_manager.delete_answer(question_id, "question_id")
-    if question['image']:
-        os.remove(UPLOAD_FOLDER + filename)
     return redirect('/list')
 
 
@@ -151,11 +162,16 @@ def delete_answer(answer_id):
     for answer_row in all_answer:
         if answer_row.get('id') == answer_id:
             answer = answer_row
-    filename = answer['image']
-    filename = filename.replace(' ', '_')
-    question_id = answer['question_id']
-    if answer['image']:
+    counter = 0
+    for item in all_answer:
+        if item['image'] == answer['image']:
+            counter += 1
+    if counter == 1:
+        filename = answer['image']
+        filename = filename.replace(' ', '_')
+        answer['image'] = filename
         os.remove(UPLOAD_FOLDER + filename)
+    question_id = answer['question_id']
     data_manager.delete_answer(answer_id, "id")
     return redirect('/question/' + question_id)
 

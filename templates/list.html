@@ -36,7 +36,11 @@
                  <td>{% if fieldname=="title" %}
                     <a href="/question/{{ question["id"]}}">
                           {% endif %}
-            {{item}}
+                 {% if fieldname=="image" %}
+                    <img src="/static/uploads/{{ question["image"] }}" width="100">
+                 {% else %}
+                    {{item}}
+                 {% endif %}
             {% if fieldname=="title" %}
                 </a>
             {% endif %}

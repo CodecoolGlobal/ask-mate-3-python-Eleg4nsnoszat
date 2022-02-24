@@ -10,6 +10,7 @@
         <p>{{ question["message"]}}</p><br>
         <a href="/question/{{ question["id"]}}/edit">Edit Question</a><br>
         <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a><br>
+
         <br><table>
             <tr>
                 <th>Submission Time</th>
@@ -21,8 +22,11 @@
             {% for answer_item in answers %}
             <tr>
             {% for fieldname, item in answer_item.items() if not fieldname == "id" %}
-                 <td>
-                 {{ item }}
+                 <td>{% if fieldname=="image" %}
+                    <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
+                 {% else %}
+                    {{item}}
+                 {% endif %}
                 </td>
             {% endfor %}
             <td>
