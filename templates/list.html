@@ -7,9 +7,9 @@
     <body>
         <h1>Ask Mate - All Questions</h1>
         <a href="/add-question">Add new Question</a><br>
-        <br><form action="/list" method="post">
+        <br><form action="/list" method="get">
             <strong>Sort by:</strong><br>
-            <input type="radio" name="order_by" value="title" checked>Title
+            <input type="radio" name="order_by" value="title">Title
             <input type="radio" name="order_by" value="message">Message
             <input type="radio" name="order_by" value="submission_time">Submission Time
             <input type="radio" name="order_by" value="view_number">View Number
@@ -17,7 +17,7 @@
 
             <br>
             <strong>Order Direction:</strong><br>
-            <input type="radio" name="order_direction" value="asc" checked>Ascending
+            <input type="radio" name="order_direction" value="asc">Ascending
             <input type="radio" name="order_direction" value="desc">Descending
             <input type="submit" value="Submit">
         <table>

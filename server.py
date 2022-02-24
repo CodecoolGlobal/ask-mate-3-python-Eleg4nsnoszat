@@ -7,6 +7,10 @@ app = Flask(__name__)
 
 def filter_data(all_items, order_by="", order_direction=""):
     rows = [d for d in all_items if order_by in d.keys()]
+    for d in rows:
+        for key, value in d.items():
+            if value.isnumeric():
+                d[key] = int(value)
     if order_direction == "desc":
         return sorted(rows, key=itemgetter(order_by), reverse=True)
     elif order_direction == "asc":
@@ -18,11 +22,7 @@ def filter_data(all_items, order_by="", order_direction=""):
 @app.route("/list", methods=['GET', 'POST'])
 def list_question_page():
     all_question = data_manager.get_all_questions()
-    if request.method == 'GET':
-        for question in all_question:
-            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
-        return render_template('list.html', all_questions=all_question)
-    if request.method == 'POST':
+    if request.args:
         _order_by = request.args.get('order_by')
         _order_direction = request.args.get('order_direction')
         all_questions = filter_data(all_question, order_by=_order_by, order_direction=_order_direction)
@@ -31,7 +31,15 @@ def list_question_page():
         html = render_template('list.html', all_questions=all_questions, order_by=_order_by,
                                order_direction=_order_direction)
         return html
+    else:
+        for question in all_question:
+            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+        return render_template('list.html', all_questions=all_question)
 
+
+@app.route("/", methods=['GET', 'POST'])
+def main_page():
+    return redirect("/list")
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def show_question_answers(question_id):
@@ -82,7 +90,7 @@ def add_new_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
     data_manager.delete_question(question_id)
-    data_manager.delete_answer(question_id)
+    data_manager.delete_answer(question_id, "question_id")
     return redirect('/list')
 
 
@@ -112,7 +120,7 @@ def delete_answer(answer_id):
         if answer_row.get('id') == answer_id:
             answer = answer_row
     question_id = answer['question_id']
-    data_manager.delete_answer(answer_id)
+    data_manager.delete_answer(answer_id, "id")
     return redirect('/question/' + question_id)
 
 
