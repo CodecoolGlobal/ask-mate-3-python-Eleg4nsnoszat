@@ -11,6 +11,8 @@ def filter_data(all_items, order_by="", order_direction=""):
         for key, value in d.items():
             if value.isnumeric():
                 d[key] = int(value)
+            if value.isalpha():
+                d[key] = value.lower()
     if order_direction == "desc":
         return sorted(rows, key=itemgetter(order_by), reverse=True)
     elif order_direction == "asc":
@@ -28,12 +30,18 @@ def list_question_page():
         all_questions = filter_data(all_question, order_by=_order_by, order_direction=_order_direction)
         for question in all_questions:
             question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+            for key, value in question.items():
+                if isinstance(value, str):
+                    question[key] = value.capitalize()
         html = render_template('list.html', all_questions=all_questions, order_by=_order_by,
                                order_direction=_order_direction)
         return html
     else:
         for question in all_question:
             question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+            for key, value in question.items():
+                if isinstance(value, str):
+                    question[key] = value.capitalize()
         return render_template('list.html', all_questions=all_question)
 
 
