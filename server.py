@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 import data_manager
 from operator import itemgetter
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'static/uploads/'
 
 
 def filter_data(all_items, order_by="", order_direction=""):
@@ -73,11 +77,14 @@ def add_question():
     submission_time = data_manager.get_submission_time()
     view_number = 0
     vote_number = 0
-    if request.method == "GET":
+    if request.method == 'GET':
         return render_template('add-question.html', question_id=question_id,
                                submission_time=submission_time, view_number=view_number, vote_number=vote_number)
-    elif request.method == "POST":
-        new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION}
+    elif request.method == 'POST':
+        picture = request.files['image']
+        new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION[:-1]}
+        picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
+        new_question['image'] = picture.filename
         data_manager.add_new_question(new_question)
         return redirect('/question/' + new_question.get('id'))
 
@@ -97,8 +104,16 @@ def add_new_answer(question_id):
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
+    all_questions = data_manager.get_all_questions()
+    question = None
+    for question_row in all_questions:
+        if question_row.get('id') == question_id:
+            question = question_row
+    filename = question['image']
+    filename = filename.replace(' ', '_')
     data_manager.delete_question(question_id)
     data_manager.delete_answer(question_id, "question_id")
+    os.remove(UPLOAD_FOLDER + filename)
     return redirect('/list')
 
 
