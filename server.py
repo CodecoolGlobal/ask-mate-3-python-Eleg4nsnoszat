@@ -1,16 +1,36 @@
 from flask import Flask, render_template, request, redirect, url_for
 import data_manager
-import 
+from operator import itemgetter
 
 app = Flask(__name__)
 
 
-@app.route("/")
+def filter_data(all_items, order_by="", order_direction=""):
+    rows = [d for d in all_items if order_by in d.keys()]
+    if order_direction == "desc":
+        return sorted(rows, key=itemgetter(order_by), reverse=True)
+    elif order_direction == "asc":
+        return sorted(rows, key=itemgetter(order_by))
+    else:
+        return sorted(rows, key=itemgetter(order_by))
+
+
+@app.route("/list", methods=['GET', 'POST'])
 def list_question_page():
-    all_questions = data_manager.get_all_questions()
-    for question in all_questions:
-        question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
-    return render_template('list.html', all_questions=all_questions)
+    all_question = data_manager.get_all_questions()
+    if request.method == 'GET':
+        for question in all_question:
+            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+        return render_template('list.html', all_questions=all_question)
+    if request.method == 'POST':
+        _order_by = request.args.get('order_by')
+        _order_direction = request.args.get('order_direction')
+        all_questions = filter_data(all_question, order_by=_order_by, order_direction=_order_direction)
+        for question in all_questions:
+            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
+        html = render_template('list.html', all_questions=all_questions, order_by=_order_by,
+                               order_direction=_order_direction)
+        return html
 
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
@@ -63,7 +83,7 @@ def add_new_answer(question_id):
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     data_manager.delete_answer(question_id)
-    return redirect('/')
+    return redirect('/list')
 
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
@@ -109,7 +129,7 @@ def vote_up_question(question_id):
         vote_number += 1
     question['vote_number'] = vote_number
     data_manager.edit_question(question_id, 'vote_number', vote_number)
-    return redirect('/')
+    return redirect('/list')
 
 
 @app.route("/question/<question_id>/vote-down", methods=['GET', 'POST'])
@@ -126,7 +146,7 @@ def vote_down_question(question_id):
             vote_number -= 1
     question['vote_number'] = vote_number
     data_manager.edit_question(question_id, 'vote_number', vote_number)
-    return redirect('/')
+    return redirect('/list')
 
 
 @app.route("/answer/<answer_id>/vote-down", methods=['GET', 'POST'])
@@ -163,26 +183,6 @@ def vote_up_answer(answer_id):
     question_id = answer['question_id']
     return redirect('/question/' + question_id)
 
-
-def filter_data(all_items, order_by='', order_direction=None):
-    order_by = order_by.lower()
-    rows = [d for d in all_items if order_by in  d[order_by]]
-    if order_direction == 'desc':
-        return sorted(rows, key=itemgetter(order_by), reverse=True)
-    elif order_direction == 'asc':
-        return sorted(rows, key=itemgetter(order_by))
-    else:
-        return sorted(rows, key=itemgetter(order_by))
-
-
-@app.route("/results")
-def results():
-    _sortby =  request.args.get('sortby')
-    _lastname =  request.args.get('lastname')
-    peeps = filter_data(lastname=_lastname, sortby=_sortby)
-    html = render_template('results.html', lastname=_lastname,
-                           legislators=peeps, sortby=_sortby)
-    return html
 
 
 if __name__ == "__main__":
