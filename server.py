@@ -66,41 +66,22 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
-    all_questions = data_manager.get_all_questions()
-    question = None
-    for question_row in all_questions:
-        if question_row.get('id') == question_id:
-            question = question_row
-    question['submission_time'] = data_manager.get_submission_time()
+    question = data_manager.get_question_details_by_id(question_id)
     if request.method == "GET":
-        return render_template('edit.html', id=question['id'], submission_time=question['submission_time'],
-                               vote_number=question['vote_number'], view_number=question['view_number'],
-                               question=question)
+        return render_template('edit.html', question=question)
     elif request.method == "POST":
-        data_manager.edit_question(question_id, 'title', request.form['title'])
-        data_manager.edit_question(question_id, 'message', request.form['message'])
-        return redirect('/question/' + question['id'])
+        title = request.form['title']
+        message = request.form['message']
+        image = request.form['image']
+        data_manager.update_question(question_id, title, message, image)
+        return redirect('/question/' + str(question['id']))
 
 
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
 def delete_answer(answer_id):
-    all_answer = data_manager.get_all_answers()
-    answer = None
-    for answer_row in all_answer:
-        if answer_row.get('id') == answer_id:
-            answer = answer_row
-    counter = 0
-    for item in all_answer:
-        if item['image'] == answer['image']:
-            counter += 1
-    if counter == 1:
-        filename = answer['image']
-        filename = filename.replace(' ', '_')
-        answer['image'] = filename
-        os.remove(UPLOAD_FOLDER + filename)
-    question_id = answer['question_id']
-    data_manager.delete_answer(answer_id, "id")
-    return redirect('/question/' + question_id)
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    data_manager.delete_answer(answer_id)
+    return redirect('/question/' + str(question_id['question_id']))
 
 
 @app.route("/question/<question_id>/vote-up", methods=['GET', 'POST'])

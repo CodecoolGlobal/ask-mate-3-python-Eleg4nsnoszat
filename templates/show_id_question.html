@@ -13,6 +13,7 @@
 
         <br><table>
             <tr>
+                <th>ID</th>
                 <th>Submission Time</th>
                 <th>Vote Number</th>
                 <th>Question ID</th>
@@ -21,7 +22,7 @@
             </tr>
             {% for answer_item in answers %}
             <tr>
-            {% for fieldname, item in answer_item.items() if not fieldname == "id" %}
+            {% for fieldname, item in answer_item.items() %}
                  <td>{% if fieldname=="image" %}
                     <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
                  {% else %}
