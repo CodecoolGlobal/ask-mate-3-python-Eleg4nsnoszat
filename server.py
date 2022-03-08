@@ -6,58 +6,24 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/uploads/'
-
-
-def filter_data(all_items, order_by="", order_direction=""):
-    rows = [d for d in all_items if order_by in d.keys()]
-    for d in rows:
-        for key, value in d.items():
-            if value.isnumeric():
-                d[key] = int(value)
-            if value.isalpha():
-                d[key] = value.lower()
-    if order_direction == "desc":
-        return sorted(rows, key=itemgetter(order_by), reverse=True)
-    elif order_direction == "asc":
-        return sorted(rows, key=itemgetter(order_by))
-    else:
-        return sorted(rows, key=itemgetter(order_by))
-
 
 @app.route("/list", methods=['GET', 'POST'])
 def list_question_page():
-    all_question = data_manager.get_all_questions()
-    if request.args:
-        _order_by = request.args.get('order_by')
-        _order_direction = request.args.get('order_direction')
-        all_questions = filter_data(all_question, order_by=_order_by, order_direction=_order_direction)
-        for question in all_questions:
-            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
-            filename = question['image']
-            filename = filename.replace(' ', '_')
-            question['image'] = filename
-            for key, value in question.items():
-                if isinstance(value, str):
-                    question[key] = value.capitalize()
-        html = render_template('list.html', all_questions=all_questions, order_by=_order_by,
-                               order_direction=_order_direction)
-        return html
-    else:
-        for question in all_question:
-            question['submission_time'] = data_manager.get_display_submission_time(int(question['submission_time']))
-            filename = question['image']
-            filename = filename.replace(' ', '_')
-            question['image'] = filename
-            for key, value in question.items():
-                if isinstance(value, str):
-                    question[key] = value.capitalize()
+    if request.method == 'GET':
+        all_question = data_manager.get_questions('submission_time', 'DESC')
         return render_template('list.html', all_questions=all_question)
+    if request.method == 'POST':
+        _order_by = request.form['order_by']
+        _order_direction = request.form['order_direction']
+        all_question = data_manager.get_questions(_order_by, _order_direction)
+        return render_template('list.html', all_questions=all_question, order_by=_order_by,
+                               order_direction=_order_direction)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def main_page():
     return redirect("/list")
+
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def show_question_answers(question_id):
