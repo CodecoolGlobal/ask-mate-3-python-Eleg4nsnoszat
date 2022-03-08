@@ -22,6 +22,7 @@
             <input type="submit" value="Submit">
         <table>
             <tr>
+                <th>ID</th>
                 <th>Submission Time</th>
                 <th>View Number</th>
                 <th>Vote Number</th>
@@ -33,7 +34,7 @@
             <tr>
             {% for fieldname, item in question.items() %}
                  <td>{% if fieldname=="title" %}
-                    <a href="/question/{{ question["id"]}}">
+                    <a href="/question/{{ question.id}}">
                           {% endif %}
                  {% if fieldname=="image" %}
                     <img src="/static/uploads/{{ question["image"] }}" width="100">

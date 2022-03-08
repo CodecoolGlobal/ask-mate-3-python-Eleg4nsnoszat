@@ -28,19 +28,10 @@ def main_page():
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def show_question_answers(question_id):
-    all_questions = data_manager.get_all_questions()
-    question = None
-    for question_row in all_questions:
-        if question_row.get('id') == question_id:
-            question = question_row
-    answers = data_manager.get_answers(question_id)
+    question = data_manager.get_question_details_by_id(question_id)
+    answers = data_manager.get_answers_details_by_question_id(question_id)
     if request.method == 'GET':
-        view_number = question['view_number']
-        view_number = int(view_number)
-        view_number += 1
-        data_manager.edit_question(question_id, 'view_number', view_number)
-        for answer in answers:
-            answer['submission_time'] = data_manager.get_display_submission_time(int(answer['submission_time']))
+        data_manager.update_view_number(question_id)
         return render_template('show_id_question.html', question=question, answers=answers)
 
 
