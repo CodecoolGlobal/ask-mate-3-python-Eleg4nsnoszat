@@ -1,6 +1,5 @@
 import connection
-from datetime import datetime
-import time
+
 
 @connection.connection_handler
 def get_questions(cursor, order_by, order_direction):
@@ -26,8 +25,15 @@ def get_question_id(cursor):
 
 
 @connection.connection_handler
-def get_question_details_by_id(cursor, id):
-    query = f"""SELECT title, message FROM question WHERE id = '{id}'"""
+def get_answer_id(cursor):
+    query = f"""SELECT id FROM answer ORDER BY id DESC LIMIT 1"""
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_question_details_by_id(cursor, question_id):
+    query = f"""SELECT title, message FROM question WHERE id = '{question_id}'"""
     cursor.execute(query)
     return cursor.fetchone()
 
@@ -44,4 +50,16 @@ def update_view_number(cursor, question_id):
     query = f"""UPDATE question
                 SET view_number = view_number + 1
                 WHERE id = '{question_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def add_new_answer(cursor, question_id, message, image):
+    query = f"""INSERT INTO answer VALUES (DEFAULT,CURRENT_TIMESTAMP, 0,'{question_id}', '{message}', '{image}' )"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def delete_question(cursor, question_id):
+    query = f"""DELETE FROM question WHERE id = '{question_id}'"""
     cursor.execute(query)

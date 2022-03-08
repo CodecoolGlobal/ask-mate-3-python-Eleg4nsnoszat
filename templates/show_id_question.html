@@ -2,14 +2,14 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Question nr. {{ question["id"]}}</title>
+        <title>Question nr. {{ question_id}}</title>
     </head>
     <body>
-        <h1>Question nr. {{ question["id"]}}</h1>
+        <h1>Question nr. {{ question_id}}</h1>
         <strong>{{ question["title"]}}</strong>
         <p>{{ question["message"]}}</p><br>
-        <a href="/question/{{ question["id"]}}/edit">Edit Question</a><br>
-        <a href="/question/{{ question["id"]}}/new-answer">Add new Answer</a><br>
+        <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
+        <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
 
         <br><table>
             <tr>
