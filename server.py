@@ -3,6 +3,7 @@ import data_manager
 from operator import itemgetter
 import os
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -45,21 +46,15 @@ def show_question_answers(question_id):
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
-    question_id = data_manager.get_new_question_id()
-    submission_time = data_manager.get_submission_time()
-    view_number = 0
-    vote_number = 0
     if request.method == 'GET':
-        return render_template('add-question.html', question_id=question_id,
-                               submission_time=submission_time, view_number=view_number, vote_number=vote_number)
+        return render_template('add-question.html')
     elif request.method == 'POST':
-        picture = request.files['image']
-        if picture.filename:
-            picture.save(os.path.join(UPLOAD_FOLDER, secure_filename(picture.filename)))
-        new_question = {field_name: request.form[field_name] for field_name in data_manager.DATA_HEADER_QUESTION[:-1]}
-        new_question['image'] = picture.filename
-        data_manager.add_new_question(new_question)
-        return redirect('/question/' + new_question.get('id'))
+        title = request.form['title']
+        message = request.form['message']
+        image = request.form['image']
+        data_manager.add_question(title, message, image)
+        question_id = data_manager.get_question_id()
+        return redirect('/question/' + str(question_id['id']))
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
