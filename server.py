@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'static/uploads/'
 
 
 @app.route("/list", methods=['GET', 'POST'])
@@ -86,71 +87,28 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/vote-up", methods=['GET', 'POST'])
 def vote_up_question(question_id):
-    all_questions = data_manager.get_all_questions()
-    question = None
-    for question_row in all_questions:
-        if question_row.get('id') == question_id:
-            question = question_row
-    if request.method == 'GET':
-        vote_number = question['vote_number']
-        vote_number = int(vote_number)
-        vote_number += 1
-    question['vote_number'] = vote_number
-    data_manager.edit_question(question_id, 'vote_number', vote_number)
+    data_manager.upvote_question(question_id)
     return redirect('/list')
 
 
 @app.route("/question/<question_id>/vote-down", methods=['GET', 'POST'])
 def vote_down_question(question_id):
-    all_questions = data_manager.get_all_questions()
-    question = None
-    for question_row in all_questions:
-        if question_row.get('id') == question_id:
-            question = question_row
-    if request.method == 'GET':
-        vote_number = question['vote_number']
-        vote_number = int(vote_number)
-        if vote_number > 0:
-            vote_number -= 1
-    question['vote_number'] = vote_number
-    data_manager.edit_question(question_id, 'vote_number', vote_number)
+    data_manager.downvote_question(question_id)
     return redirect('/list')
 
 
 @app.route("/answer/<answer_id>/vote-down", methods=['GET', 'POST'])
 def vote_down_answer(answer_id):
-    all_answer = data_manager.get_all_answers()
-    answer = None
-    for answer_row in all_answer:
-        if answer_row.get('id') == answer_id:
-            answer = answer_row
-    if request.method == 'GET':
-        vote_number = answer['vote_number']
-        vote_number = int(vote_number)
-        if vote_number > 0:
-            vote_number -= 1
-    answer['vote_number'] = vote_number
-    data_manager.edit_answer(answer_id, 'vote_number', vote_number)
-    question_id = answer['question_id']
-    return redirect('/question/' + question_id)
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    data_manager.downvote_answer(answer_id)
+    return redirect('/question/' + str(question_id['question_id']))
 
 
 @app.route("/answer/<answer_id>/vote-up", methods=['GET', 'POST'])
 def vote_up_answer(answer_id):
-    all_answer = data_manager.get_all_answers()
-    answer = None
-    for answer_row in all_answer:
-        if answer_row.get('id') == answer_id:
-            answer = answer_row
-    if request.method == 'GET':
-        vote_number = answer['vote_number']
-        vote_number = int(vote_number)
-        vote_number += 1
-    answer['vote_number'] = vote_number
-    data_manager.edit_answer(answer_id, 'vote_number', vote_number)
-    question_id = answer['question_id']
-    return redirect('/question/' + question_id)
-
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    data_manager.upvote_answer(answer_id)
+    return redirect('/question/' + str(question_id['question_id']))
 
 
 if __name__ == "__main__":

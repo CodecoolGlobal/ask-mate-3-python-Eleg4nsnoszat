@@ -16,7 +16,6 @@ def add_question(cursor, title, message, image):
     cursor.execute(query)
 
 
-
 @connection.connection_handler
 def get_question_id(cursor):
     query = f"""SELECT id FROM question ORDER BY id DESC LIMIT 1"""
@@ -40,7 +39,7 @@ def get_question_details_by_id(cursor, question_id):
 
 @connection.connection_handler
 def get_answers_details_by_question_id(cursor, question_id):
-    query = f"""SELECT * FROM answer WHERE question_id = '{question_id}'"""
+    query = f"""SELECT * FROM answer WHERE question_id = '{question_id}' ORDER BY submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -50,6 +49,38 @@ def update_view_number(cursor, question_id):
     query = f"""UPDATE question
                 SET view_number = view_number + 1
                 WHERE id = '{question_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def upvote_question(cursor, question_id):
+    query = f"""UPDATE question
+                SET vote_number = vote_number + 1
+                WHERE id = '{question_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def upvote_answer(cursor, answer_id):
+    query = f"""UPDATE answer
+                SET vote_number = vote_number + 1
+                WHERE id = '{answer_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def downvote_question(cursor, question_id):
+    query = f"""UPDATE question
+                SET vote_number = vote_number - 1
+                WHERE id = '{question_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def downvote_answer(cursor, answer_id):
+    query = f"""UPDATE answer
+                SET vote_number = vote_number - 1
+                WHERE id = '{answer_id}'"""
     cursor.execute(query)
 
 
