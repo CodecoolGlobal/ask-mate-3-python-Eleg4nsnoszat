@@ -2,10 +2,29 @@ from flask import Flask, render_template, request, redirect, url_for
 import data_manager
 import os
 from werkzeug.utils import secure_filename
+import time
 
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
+
+
+def get_filename():
+    image = request.files['image']
+    timestamp = time.time()
+    timestamp = round(timestamp)
+    if image.filename:
+        filename = secure_filename(str(timestamp) + image.filename)
+    else:
+        filename = ''
+    return filename
+
+
+def save_image():
+    filename = get_filename()
+    image = request.files['image']
+    if filename:
+        image.save(os.path.join(UPLOAD_FOLDER, filename))
 
 
 @app.route("/list", methods=['GET', 'POST'])
@@ -42,8 +61,9 @@ def add_question():
     elif request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
-        image = request.form['image']
-        data_manager.add_question(title, message, image)
+        image_name = get_filename()
+        save_image()
+        data_manager.add_question(title, message, image_name)
         question_id = data_manager.get_question_id()
         return redirect('/question/' + str(question_id['id']))
 
@@ -53,34 +73,59 @@ def add_new_answer(question_id):
     if request.method == 'GET':
         return render_template('new-answer.html', question_id=question_id)
     elif request.method == 'POST':
-        image = request.form['image']
+        image_name = get_filename()
+        save_image()
         message = request.form['message']
-        data_manager.add_new_answer(question_id, message, image)
+        data_manager.add_new_answer(question_id, message, image_name)
         return redirect('/question/' + question_id)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
+    question = data_manager.get_question_details_by_id(question_id)
+    filename = question['image']
+    if filename:
+        os.remove(os.path.dirname(__file__) + '/' + UPLOAD_FOLDER + filename)
     data_manager.delete_question(question_id)
     return redirect('/list')
 
 
-@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     question = data_manager.get_question_details_by_id(question_id)
-    if request.method == "GET":
+    if request.method == 'GET':
         return render_template('edit.html', question=question)
-    elif request.method == "POST":
+    if request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
-        image = request.form['image']
-        data_manager.update_question(question_id, title, message, image)
+        image = request.files['image']
+        if image.filename:
+            image_name = get_filename()
+            save_image()
+        else:
+            image_name = question['image']
+        data_manager.update_question(question_id, title, message, image_name)
         return redirect('/question/' + str(question['id']))
+
+
+@app.route('/question/<question_id>/edit/remove-image')
+def delete_uploaded_question_image(question_id):
+    if request.method == 'GET':
+        question = data_manager.get_question_details_by_id(question_id)
+        image_name = question['image']
+        data_manager.delete_question_image(question_id)
+        if image_name:
+            os.remove(os.path.dirname(__file__) + '/' + UPLOAD_FOLDER + image_name)
+        return redirect('/question/' + str(question_id) + '/edit')
 
 
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
 def delete_answer(answer_id):
     question_id = data_manager.get_question_by_answer_id(answer_id)
+    answer = data_manager.get_answer_by_answer_id(answer_id)
+    image_name = answer['image']
+    if image_name:
+        os.remove(os.path.dirname(__file__) + '/' + UPLOAD_FOLDER + image_name)
     data_manager.delete_answer(answer_id)
     return redirect('/question/' + str(question_id['question_id']))
 

@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Edit Question nr. {{ question['id'] }}</h1>
-    <form action="/question/{{ question['id'] }}/edit" method="post">
+    <form action="/question/{{ question['id'] }}/edit" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{{ question['id'] }}"><br>
         <input type="hidden" name="submission_time" value="{{question['submission_time'] }}"><br>
         <input type="hidden" name="view_number" value="{{question['view_number'] }}"><br>
@@ -15,7 +15,9 @@
             <input type="text" name="title" size="20" id="title" value="{{ question['title']}}" minlength="5" required><br>
         <br><label for="message">Question message:</label><br>
                 <textarea name="message" rows="4" cols="40" id="message" required>{{ question['message']}}</textarea><br>
-        <input type="text" name="image" value="{{question['image'] }}"><br>
+        <br><label for="image">Modify image:</label><br>
+        <input type="file" name="image" id="image" accept="image/*"><br>
+        <a href="/question/{{ question["id"] }}/edit/remove-image">Delete uploaded image</a>
             <br><button type="submit">Send</button>
         </form>
     </body>

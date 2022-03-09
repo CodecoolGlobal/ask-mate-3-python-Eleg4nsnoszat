@@ -12,7 +12,7 @@ def get_questions(cursor, order_by, order_direction):
 @connection.connection_handler
 def add_question(cursor, title, message, image):
     query = f"""INSERT INTO question
-                VALUES (default, CURRENT_TIMESTAMP, 0, 0, '{title}', '{message}', '{image}');"""
+                VALUES (default, CURRENT_TIMESTAMP, 0, 0, '{title}', '{message}', NULLIF ('{image}', ''));"""
     cursor.execute(query)
 
 
@@ -93,8 +93,17 @@ def update_question(cursor, question_id, title, message, image):
 
 
 @connection.connection_handler
+def delete_question_image(cursor, question_id):
+    query = f"""UPDATE question
+                SET image = NULL
+                WHERE id = '{question_id}'"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
 def add_new_answer(cursor, question_id, message, image):
-    query = f"""INSERT INTO answer VALUES (DEFAULT,CURRENT_TIMESTAMP, 0,'{question_id}', '{message}', '{image}' )"""
+    query = f"""INSERT INTO answer VALUES (DEFAULT,CURRENT_TIMESTAMP, 0,'{question_id}', '{message}', 
+    NULLIF ('{image}', ''))"""
     cursor.execute(query)
 
 
@@ -113,5 +122,12 @@ def delete_answer(cursor, answer_id):
 @connection.connection_handler
 def get_question_by_answer_id(cursor, answer_id):
     query = f"""SELECT question_id FROM answer WHERE id = '{answer_id}'"""
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_answer_by_answer_id(cursor, answer_id):
+    query = f"""SELECT * FROM answer WHERE id = '{answer_id}'"""
     cursor.execute(query)
     return cursor.fetchone()
