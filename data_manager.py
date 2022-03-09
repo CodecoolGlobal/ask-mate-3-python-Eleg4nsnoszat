@@ -102,7 +102,7 @@ def delete_question_image(cursor, question_id):
 
 @connection.connection_handler
 def add_new_answer(cursor, question_id, message, image):
-    query = f"""INSERT INTO answer VALUES (DEFAULT,CURRENT_TIMESTAMP, 0,'{question_id}', '{message}', 
+    query = f"""INSERT INTO answer VALUES (DEFAULT, CURRENT_TIMESTAMP, 0,'{question_id}', '{message}', 
     NULLIF ('{image}', ''))"""
     cursor.execute(query)
 
@@ -131,3 +131,44 @@ def get_answer_by_answer_id(cursor, answer_id):
     query = f"""SELECT * FROM answer WHERE id = '{answer_id}'"""
     cursor.execute(query)
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def add_new_comment_to_question(cursor, question_id, message):
+    query = f"""INSERT INTO comment VALUES (default, '{question_id}', NULL, '{message}', CURRENT_TIMESTAMP, 0)"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def get_comments_by_question_id(cursor, question_id):
+    query = f"""SELECT id, message, submission_time, edited_count FROM comment WHERE question_id = '{question_id}'"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_new_comment_to_answer(cursor, answer_id, message):
+    query = f"""INSERT INTO comment VALUES (default, NULL, '{answer_id}', '{message}', CURRENT_TIMESTAMP, 0)"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def get_comments_by_answer(cursor, answer_id):
+    query = f"""SELECT message, submission_time FROM comment WHERE answer_id = '{answer_id}'"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comment_by_id(cursor, comment_id):
+    query = f"""SELECT id, message, question_id, edited_count FROM comment WHERE id = '{comment_id}'"""
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def update_comment(cursor, comment_id, message):
+    query = f"""UPDATE comment
+                SET message = '{message}', submission_time = CURRENT_TIMESTAMP, edited_count = edited_count + 1
+                WHERE id = '{comment_id}'"""
+    cursor.execute(query)

@@ -49,9 +49,11 @@ def main_page():
 def show_question_answers(question_id):
     question = data_manager.get_question_details_by_id(question_id)
     answers = data_manager.get_answers_details_by_question_id(question_id)
+    comments = data_manager.get_comments_by_question_id(question_id)
     if request.method == 'GET':
         data_manager.update_view_number(question_id)
-        return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers)
+        return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
+                               comments=comments)
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -155,6 +157,43 @@ def vote_up_answer(answer_id):
     data_manager.upvote_answer(answer_id)
     return redirect('/question/' + str(question_id['question_id']))
 
+@app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
+def add_comment_to_question(question_id):
+    if request.method == 'GET':
+        return render_template("new-comment.html", question_id=question_id)
+    if request.method == 'POST':
+        message = request.form['message']
+        data_manager.add_new_comment_to_question(question_id, message)
+        return redirect('/question/' + str(question_id))
+
+@app.route("/answer/<answer_id>/new-comment", methods=['GET', 'POST'])
+def add_comment_to_answer(answer_id):
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    if request.method == 'GET':
+        return render_template("new-comment-answer.html", answer_id=answer_id)
+    if request.method == 'POST':
+        message = request.form['message']
+        data_manager.add_new_comment_to_answer(answer_id, message)
+        return redirect('/question/' + str(question_id['question_id']))
+
+@app.route("/show-answer-comments/<answer_id>", methods=['GET'])
+def show_answer_comments(answer_id):
+    comments = data_manager.get_comments_by_answer(answer_id)
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    if request.method == 'GET':
+        return render_template("show-answer-comments.html", comments=comments,
+                               question_id=question_id, answer_id=answer_id)
+
+
+@app.route("/comment/<comment_id>/edit", methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    comment = data_manager.get_comment_by_id(comment_id)
+    if request.method == "GET":
+        return render_template("edit-comment.html", comment=comment, comment_id=comment_id)
+    if request.method == "POST":
+        message = request.form['message']
+        data_manager.update_comment(comment_id, message)
+        return redirect('/question/' + str(comment['question_id']))
 
 if __name__ == "__main__":
     app.run()

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Answer nr. {{ answer_id}}</title>
+    </head>
+    <body>
+        <h1>Answer nr. {{ answer_id }}</h1>
+        <table>
+            <tr>
+                <th>Message</th>
+                <th>Submission Time</th>
+            </tr>
+            {% for comment in comments %}
+            <tr>
+                <td>{{ comment["message"] }}</td>
+                <td>{{ comment["submission_time"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <a href="/question/{{ question_id['question_id'] }}">Back to question</a>
+
+    </body>
+</html>

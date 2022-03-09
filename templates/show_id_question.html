@@ -9,9 +9,10 @@
         <strong>{{ question["title"]}}</strong>
         <p>{{ question["message"]}}</p><br>
         <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
+        <br>
+        <h2>Answers</h2>
         <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
-
-        <br><table>
+        <table>
             <tr>
                 <th>ID</th>
                 <th>Submission Time</th>
@@ -22,14 +23,17 @@
             </tr>
             {% for answer_item in answers %}
             <tr>
-            {% for fieldname, item in answer_item.items() %}
-                 <td>{% if fieldname=="image" %}
-                    <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
-                 {% else %}
-                    {{item}}
-                 {% endif %}
+            <td>{{ answer_item["id"] }}</td>
+            <td>{{ answer_item["submission_time"] }}</td>
+            <td>{{ answer_item["vote_number"] }}</td>
+            <td>{{ answer_item["question_id"] }}</td>
+            <td><a href="/show-answer-comments/{{ answer_item["id"] }}">{{ answer_item["message"] }}</a></td>
+                <td>
+                    {% if answer_item["image"] %}
+                        <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
+                    {% endif %}
                 </td>
-            {% endfor %}
+
             <td>
                 <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
             </td>
@@ -39,10 +43,33 @@
             <td>
                 <a href="/answer/{{ answer_item.get('id')}}/vote-down">Downvote</a>
             </td>
+            <td>
+                <a href="/answer/{{ answer_item.get('id')}}/new-comment">Add comment</a>
+            </td>
             </tr>
             {% endfor %}
         </table>
         <br>
+        <h2>Comments</h2>
+        <a href="/question/{{ question_id }}/new-comment">New Comment</a><br>
+         <table>
+            <tr>
+                <th>Message</th>
+                <th>Submission Time</th>
+            </tr>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.message }}</td>
+                    <td>{{ comment.submission_time }}</td>
+                    <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
+                    <td>Edited {{ comment.edited_count }} times</td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+        <br>
         <a href="/list">Back to main Page</a>
+
     </body>
 </html>
