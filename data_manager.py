@@ -154,14 +154,14 @@ def add_new_comment_to_answer(cursor, answer_id, message):
 
 @connection.connection_handler
 def get_comments_by_answer(cursor, answer_id):
-    query = f"""SELECT message, submission_time FROM comment WHERE answer_id = '{answer_id}'"""
+    query = f"""SELECT id, message, submission_time FROM comment WHERE answer_id = '{answer_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
 def get_comment_by_id(cursor, comment_id):
-    query = f"""SELECT id, message, question_id, edited_count FROM comment WHERE id = '{comment_id}'"""
+    query = f"""SELECT * FROM comment WHERE id = '{comment_id}'"""
     cursor.execute(query)
     return cursor.fetchone()
 

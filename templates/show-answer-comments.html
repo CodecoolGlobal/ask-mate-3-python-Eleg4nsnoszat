@@ -15,6 +15,7 @@
             <tr>
                 <td>{{ comment["message"] }}</td>
                 <td>{{ comment["submission_time"] }}</td>
+                <td><a href="/comment/{{ comment["id"] }}/edit">Edit comment</a></td>
             </tr>
             {% endfor %}
         </table>

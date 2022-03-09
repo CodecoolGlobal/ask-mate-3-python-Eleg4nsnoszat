@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Edit Comment nr. {{ comment_id }}</h1>
-    <form action="/comment/{{ comment['id'] }}/edit" method="post">
+    <form action="/comment/{{ comment_id }}/edit" method="post">
         <label for="message">Edit comment message:</label><br>
                 <textarea name="message" rows="4" cols="40" id="message" required>{{ comment.message }}</textarea><br>
         <br><button type="submit">Send</button>
