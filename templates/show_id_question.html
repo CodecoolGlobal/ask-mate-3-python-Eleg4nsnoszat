@@ -17,7 +17,7 @@
         <h1>Question nr. {{ question_id}}</h1>
         <strong>Tags: </strong>
         {% for tag in all_tags_for_question %}
-            <p class="tag">{{ tag.name }}</p>
+            <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
         {% endfor %}
         <br>
         <br>

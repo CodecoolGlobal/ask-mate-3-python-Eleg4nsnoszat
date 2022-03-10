@@ -239,5 +239,12 @@ def add_tag(question_id):
         data_manager.add_tag_for_question_tag(question_id)
         return redirect("/question/" + str(question_id))
 
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
+def delete_tag(question_id, tag_id):
+    data_manager.delete_tag(tag_id)
+    return redirect("/question/" + str(question_id))
+
+
 if __name__ == "__main__":
     app.run()

@@ -214,3 +214,10 @@ def get_tags_by_question_id(cursor, question_id):
                 INNER JOIN tag ON id = tag_id WHERE question_id = '{question_id}'"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_tag(cursor, tag_id):
+    query = f"""DELETE FROM question_tag WHERE tag_id = '{tag_id}'"""
+    cursor.execute(query)
+
