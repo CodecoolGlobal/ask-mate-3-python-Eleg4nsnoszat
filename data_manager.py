@@ -221,3 +221,10 @@ def delete_tag(cursor, tag_id):
     query = f"""DELETE FROM question_tag WHERE tag_id = '{tag_id}'"""
     cursor.execute(query)
 
+
+@connection.connection_handler
+def update_answer(cursor, message, answer_id):
+    query = f"""UPDATE answer
+                SET message = '{message}'
+                WHERE id = '{answer_id}'"""
+    cursor.execute(query)

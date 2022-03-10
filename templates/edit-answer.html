@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Answer nr. {{ answer_id }}</title>
+    </head>
+    <body>
+        <h1>Edit Answer nr. {{ answer_id }}</h1>
+    <form action="/answer/{{ answer_id }}/edit" method="post">
+        <label for="message">Edit answer message:</label><br>
+                <textarea name="message" rows="4" cols="40" id="message" required>{{ answer.message }}</textarea><br>
+        <br><button type="submit">Send</button>
+        </form>
+    </body>
+</html>

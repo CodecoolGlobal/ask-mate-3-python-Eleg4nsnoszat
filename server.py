@@ -246,5 +246,16 @@ def delete_tag(question_id, tag_id):
     return redirect("/question/" + str(question_id))
 
 
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    answer = data_manager.get_answer_by_answer_id(answer_id)
+    if request.method == 'GET':
+        return render_template("edit-answer.html", answer_id=answer_id, answer=answer)
+    question_id = data_manager.get_question_by_answer_id(answer_id)
+    message = request.form['message']
+    data_manager.update_answer(message, answer_id)
+    return redirect("/question/" + str(question_id['question_id']))
+
+
 if __name__ == "__main__":
     app.run()
