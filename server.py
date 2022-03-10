@@ -212,11 +212,11 @@ def edit_comment(comment_id):
     if request.method == 'POST':
         message = request.form['message']
         data_manager.update_comment(comment_id, message)
-        if question_id:
+        if question_id is not None:
             return redirect('/question/' + str(question_id))
         else:
             question = data_manager.get_question_by_answer_id(answer_id)
-            question_id = question['question_id']
+            question_id = question['id']
             return redirect('/question/' + str(question_id))
 
 

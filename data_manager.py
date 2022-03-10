@@ -169,7 +169,7 @@ def get_comment_by_id(cursor, comment_id):
 @connection.connection_handler
 def update_comment(cursor, comment_id, message):
     query = f"""UPDATE comment
-                SET message = '{message}', submission_time = CURRENT_TIMESTAMP, edited_count = edited_count + 1
+                SET message = '{message}', submission_time = CURRENT_TIMESTAMP, edited_count = edited_count + 1 
                 WHERE id = '{comment_id}'"""
     cursor.execute(query)
 
