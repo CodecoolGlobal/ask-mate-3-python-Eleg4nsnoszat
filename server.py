@@ -4,7 +4,6 @@ import os
 from werkzeug.utils import secure_filename
 import time
 
-
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
 
@@ -204,6 +203,20 @@ def edit_comment(comment_id):
             question = data_manager.get_question_by_answer_id(answer_id)
             question_id = question['question_id']
             return redirect('/question/' + str(question_id))
+
+
+@app.route("/comments/<comment_id>/delete", methods=["GET", "POST"])
+def delete_comment(comment_id):
+    comment = data_manager.get_comment_by_id(comment_id)
+    question_id = comment['question_id']
+    answer_id = comment['answer_id']
+
+    data_manager.delete_comment(comment_id)
+    if answer_id:
+        question = data_manager.get_question_by_answer_id(answer_id)
+        question_id = question['question_id']
+
+    return redirect("/question/" + str(question_id))
 
 
 if __name__ == "__main__":

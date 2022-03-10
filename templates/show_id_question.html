@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Question nr. {{ question_id}}</title>
     </head>
     <body>
@@ -63,6 +64,7 @@
                     <td>{{ comment.submission_time }}</td>
                     <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
                     <td>Edited {{ comment.edited_count }} times</td>
+                    <td><a href="/comments/{{ comment.id }}/delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-trash-o" style="font-size: 24px"></i></a></td>
                 </tr>
             {% endfor %}
 

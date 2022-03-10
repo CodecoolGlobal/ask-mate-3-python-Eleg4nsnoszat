@@ -172,3 +172,9 @@ def update_comment(cursor, comment_id, message):
                 SET message = '{message}', submission_time = CURRENT_TIMESTAMP, edited_count = edited_count + 1
                 WHERE id = '{comment_id}'"""
     cursor.execute(query)
+
+
+@connection.connection_handler
+def delete_comment(cursor, comment_id):
+    query = f"""DELETE FROM comment WHERE id = '{comment_id}'"""
+    cursor.execute(query)
