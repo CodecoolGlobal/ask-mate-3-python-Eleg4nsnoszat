@@ -228,3 +228,12 @@ def update_answer(cursor, message, answer_id):
                 SET message = '{message}'
                 WHERE id = '{answer_id}'"""
     cursor.execute(query)
+
+
+@connection.connection_handler
+def search_questions(cursor, search_input, order_by, order_direction):
+    query = f"""SELECT * FROM question
+                WHERE title ILIKE '%{search_input}%' ORDER BY {order_by} {order_direction}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+

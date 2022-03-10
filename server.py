@@ -26,7 +26,7 @@ def save_image():
         image.save(os.path.join(UPLOAD_FOLDER, filename))
 
 
-@app.route("/list", methods=['GET', 'POST'])
+@app.route('/list', methods=['GET', 'POST'])
 def list_question_page():
     if request.method == 'GET':
         all_question = data_manager.get_questions('submission_time', 'DESC')
@@ -34,9 +34,15 @@ def list_question_page():
     if request.method == 'POST':
         _order_by = request.form['order_by']
         _order_direction = request.form['order_direction']
-        all_question = data_manager.get_questions(_order_by, _order_direction)
-        return render_template('list.html', all_questions=all_question, order_by=_order_by,
-                               order_direction=_order_direction)
+        _search = request.form['search']
+        if _search:
+            all_question = data_manager.search_questions(_search, _order_by, _order_direction)
+            return render_template('list.html', all_questions=all_question, search=_search,
+                                   order_by=_order_by, order_direction=_order_direction)
+        else:
+            all_question = data_manager.get_questions(_order_by, _order_direction)
+            return render_template('list.html', all_questions=all_question, order_by=_order_by,
+                                   order_direction=_order_direction)
 
 
 @app.route("/", methods=['GET', 'POST'])
