@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="static/style.css">
         <title>Ask Mate - All Questions</title>
     </head>
     <body>
@@ -9,16 +10,20 @@
         <a href="/add-question">Add new Question</a><br>
         <a href="/">Back to main Page</a>
             <form action="/list" method="post">
-                <label for="search">Search in questions:</label>
-                <input id="search" type="text" name="search">
+                <div class="cover">
+                 <div class="tb">
+                <div class="td"> <input id="search" placeholder="   Search" type="text" name="search"></div>
+                 </div>
+                    </div>
+                <label for="order_by"><strong>Sort by:</strong></label>
                 <input type="radio" name="order_by" value="title">Title
                 <input type="radio" name="order_by" value="message">Message
                 <input type="radio" name="order_by" value="submission_time" checked>Submission Time
                 <input type="radio" name="order_by" value="view_number">View Number
                 <input type="radio" name="order_by" value="vote_number">Vote Number
+                <label for="order_direction"><strong>Order direction:</strong></label>
                 <input type="radio" name="order_direction" value="ASC">Ascending
                 <input type="radio" name="order_direction" value="DESC" checked>Descending
-                <button type="submit">Search</button><br>
             </form>
         <table>
             <tr>
