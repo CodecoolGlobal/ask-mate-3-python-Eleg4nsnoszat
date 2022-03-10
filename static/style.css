@@ -15,12 +15,16 @@ body {
 }
 input,
 button {
-  color: rgb(255, 255, 255);
-  font-family: Nunito;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  background-color: transparent;
+  background-color: #f89097;
+  border: none;
+  color: #313752;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 1px;
+  cursor: pointer;
 }
 .cover {
   margin: 25px;
@@ -38,7 +42,7 @@ input[type="text"] {
   line-height: 1;
 }
 input[type="text"]::placeholder {
-  color: #ffffff;
+  color: #313752;
 }
 table {
       margin: 25px;

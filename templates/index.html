@@ -16,12 +16,12 @@
                 <input type="radio" name="order_by" value="submission_time" checked>Submission Time
                 <input type="radio" name="order_by" value="view_number">View Number
                 <input type="radio" name="order_by" value="vote_number">Vote Number
-                <label for="order_direction"><strong>Order direction:</strong></label>
+                <br><label for="order_direction"><strong>Order direction:</strong></label>
                 <input type="radio" name="order_direction" value="ASC">Ascending
                 <input type="radio" name="order_direction" value="DESC" checked>Descending
-                <button type="submit">Submit</button><br>
-            </form><br>
-        <br><table>
+            <br><button type="submit">Submit</button><br>
+            </form>
+        <table>
             <tr>
                 <th>ID</th>
                 <th>Submission Time</th>
@@ -38,7 +38,7 @@
                     <a href="/question/{{ question.id}}">
                           {% endif %}
                  {% if fieldname=="image" and item != None %}
-                    <img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="100">
+                    <img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="30">
                  {% else %}
                     {{ item }}
                  {% endif %}
