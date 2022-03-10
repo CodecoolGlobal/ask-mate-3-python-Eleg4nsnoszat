@@ -178,3 +178,39 @@ def update_comment(cursor, comment_id, message):
 def delete_comment(cursor, comment_id):
     query = f"""DELETE FROM comment WHERE id = '{comment_id}'"""
     cursor.execute(query)
+
+
+@connection.connection_handler
+def get_latest_questions(cursor, order_by, order_direction):
+    query = f"""SELECT * FROM question 
+    ORDER BY {order_by} {order_direction} LIMIT 5;"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_tag_for_tag(cursor, name):
+    query = f"""INSERT INTO tag VALUES (default, '{name}')"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def add_tag_for_question_tag(cursor, question_id):
+    query = f"""INSERT INTO question_tag VALUES ('{question_id}', (SELECT id FROM tag ORDER BY id DESC LIMIT 1))"""
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def get_all_tags(cursor):
+    query = f"""SELECT * FROM tag"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_tags_by_question_id(cursor, question_id):
+    query = f"""SELECT *
+                FROM question_tag
+                INNER JOIN tag ON id = tag_id WHERE question_id = '{question_id}'"""
+    cursor.execute(query)
+    return cursor.fetchall()

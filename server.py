@@ -41,7 +41,15 @@ def list_question_page():
 
 @app.route("/", methods=['GET', 'POST'])
 def main_page():
-    return redirect("/list")
+    if request.method == 'GET':
+        latest_questions = data_manager.get_latest_questions('submission_time', 'DESC')
+        return render_template('index.html', latest_questions=latest_questions)
+    if request.method == 'POST':
+        _order_by = request.form['order_by']
+        _order_direction = request.form['order_direction']
+        latest_questions = data_manager.get_latest_questions(_order_by, _order_direction)
+        return render_template('index.html', latest_questions=latest_questions, order_by=_order_by,
+                               order_direction=_order_direction)
 
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
@@ -49,10 +57,11 @@ def show_question_answers(question_id):
     question = data_manager.get_question_details_by_id(question_id)
     answers = data_manager.get_answers_details_by_question_id(question_id)
     comments = data_manager.get_comments_by_question_id(question_id)
+    all_tags_for_question = data_manager.get_tags_by_question_id(question_id)
     if request.method == 'GET':
         data_manager.update_view_number(question_id)
         return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                               comments=comments)
+                               comments=comments, all_tags_for_question=all_tags_for_question)
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -218,6 +227,17 @@ def delete_comment(comment_id):
 
     return redirect("/question/" + str(question_id))
 
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def add_tag(question_id):
+    all_tags = data_manager.get_all_tags()
+    if request.method == 'GET':
+        return render_template('add-tag.html', question_id=question_id, all_tags=all_tags)
+    if request.method == 'POST':
+        name = request.form['name']
+        data_manager.add_tag_for_tag(name)
+        data_manager.add_tag_for_question_tag(question_id)
+        return redirect("/question/" + str(question_id))
 
 if __name__ == "__main__":
     app.run()

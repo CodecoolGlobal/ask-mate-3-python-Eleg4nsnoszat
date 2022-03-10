@@ -7,9 +7,8 @@
     <body>
         <h1>Ask Mate - All Questions</h1>
         <a href="/add-question">Add new Question</a><br>
-        <a href="/">Back to main page</a><br>
-
-        <br><form action="/list" method="post">
+        <a href="/list">List all questions</a><br>
+        <br><form action="/" method="post">
             <strong>Sort by:</strong><br>
             <input type="radio" name="order_by" value="title">Title
             <input type="radio" name="order_by" value="message">Message
@@ -32,7 +31,7 @@
                 <th>Question Message</th>
                 <th>Image</th>
             </tr>
-            {% for question in all_questions %}
+            {% for question in latest_questions %}
             <tr>
             {% for fieldname, item in question.items() %}
                  <td>{% if fieldname=="title" %}

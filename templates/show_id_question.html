@@ -4,11 +4,26 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Question nr. {{ question_id}}</title>
+        <style>
+            .tag {
+                border: 2px solid red;
+                padding: 10px;
+                border-radius: 25px;
+                display: inline;
+            }
+        </style>
     </head>
     <body>
         <h1>Question nr. {{ question_id}}</h1>
+        <strong>Tags: </strong>
+        {% for tag in all_tags_for_question %}
+            <p class="tag">{{ tag.name }}</p>
+        {% endfor %}
+        <br>
+        <br>
         <strong>{{ question["title"]}}</strong>
         <p>{{ question["message"]}}</p><br>
+        <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
         <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
         <br>
         <h2>Answers</h2>
