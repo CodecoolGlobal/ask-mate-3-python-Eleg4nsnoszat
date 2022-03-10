@@ -8,19 +8,18 @@
         <h1>Ask Mate - All Questions</h1>
         <a href="/add-question">Add new Question</a><br>
         <a href="/list">List all questions</a><br>
-        <br><form action="/" method="post">
-            <strong>Sort by:</strong><br>
-            <input type="radio" name="order_by" value="title">Title
-            <input type="radio" name="order_by" value="message">Message
-            <input type="radio" name="order_by" value="submission_time">Submission Time
-            <input type="radio" name="order_by" value="view_number">View Number
-            <input type="radio" name="order_by" value="vote_number">Vote Number
-
-            <br>
-            <strong>Order Direction:</strong><br>
-            <input type="radio" name="order_direction" value="ASC">Ascending
-            <input type="radio" name="order_direction" value="DESC">Descending
-            <input type="submit" value="Submit">
+        <br> <form action="/" method="post">
+                <label for="order_by"><strong>Sort by:</strong></label>
+                <input type="radio" name="order_by" value="title">Title
+                <input type="radio" name="order_by" value="message">Message
+                <input type="radio" name="order_by" value="submission_time" checked>Submission Time
+                <input type="radio" name="order_by" value="view_number">View Number
+                <input type="radio" name="order_by" value="vote_number">Vote Number
+                <label for="order_direction"><strong>Order direction:</strong></label>
+                <input type="radio" name="order_direction" value="ASC">Ascending
+                <input type="radio" name="order_direction" value="DESC" checked>Descending
+                <button type="submit">Submit</button><br>
+            </form>
         <table>
             <tr>
                 <th>ID</th>
