@@ -1,41 +1,21 @@
-body {
-  color: #313752;
-    background-color: #E3B4B4;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%23f89097' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%23fdb5b8' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23ef92b4' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%23f1a8bd' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23dc9acd' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%23df9dc4' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23c1a3df' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%23c696cb' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23a4ade6' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%23a691cf' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%2389b4e4' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%237d8dd0' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
-  background-attachment: fixed;
-  background-size: cover;
-}
-.td {
-  display: table-cell;
-  vertical-align: center;
-}
-.tb {
-  display: table;
-  width: 100%;
-}
+
 input,
 button {
-  background-color: #f89097;
-  border: none;
   color: #313752;
-  padding: 5px 7px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 2px 1px;
-  cursor: pointer;
-  border-radius: 30px;
+  font-family: Nunito;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
 }
 .cover {
-  margin: 25px;
-  width: 250px;
+  margin: 15px;
+  width: 350px;
   padding: 5px;
   background-color: #cca6b0;
   border-radius: 20px;
   box-shadow: 0 10px 40px #E3B4B4, 0 0 0 10px #E3B4B4;
   box-sizing: border-box;
-
 }
 input[type="text"] {
   width: 100%;
@@ -46,16 +26,41 @@ input[type="text"] {
 input[type="text"]::placeholder {
   color: #313752;
 }
-table {
-      margin: 25px;
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: calc(100% - 50px);
-      box-sizing: border-box;
-    }
+body{
+            background-color: #E3B4B4;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%23f89097' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%23fdb5b8' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23ef92b4' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%23f1a8bd' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23dc9acd' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%23df9dc4' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23c1a3df' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%23c696cb' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23a4ade6' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%23a691cf' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%2389b4e4' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%237d8dd0' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+              background-attachment: fixed;
+              background-size: cover;
+        }
+        header{
+            position: center;
+            margin: 50px 40% 50px;
+            font-size: 50px;
+            font-family: 'Dancing Script', cursive;
+            color: #313752;
+        }
+        .navigation {
+            margin-left: 5px;
+            font-family: 'Dancing Script', cursive;
+            color: #313752;
+        }
+        a {color: #65215C;}
+        table, th, td {
+                        color: #313752;
+                        font-family: 'Dancing Script', cursive;
+                        border: 3px solid;
+                        border-radius: 5px ;
+                        background: rgba(203, 165, 167, 0.25)
+                        }
+        .sort_by_order_by{
+            margin: 5px;
+            font-family: 'Dancing Script', cursive;
+            color: #313752;
 
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
+        }
+        button{
+            font-family: 'Dancing Script', cursive;
+            color: #313752;
+            background-color: #F17386;
+            size: 200px;
+        }
