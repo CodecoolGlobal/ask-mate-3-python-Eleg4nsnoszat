@@ -209,10 +209,10 @@ def get_all_tags(cursor):
 
 @connection.connection_handler
 def get_tags_by_question_id(cursor, question_id):
-    query = f"""SELECT *
+    query = """SELECT *
                 FROM question_tag
-                INNER JOIN tag ON id = tag_id WHERE question_id = '{question_id}'"""
-    cursor.execute(query)
+                INNER JOIN tag ON id = tag_id WHERE question_id = %(id)s"""
+    cursor.execute(query, {'id': question_id})
     return cursor.fetchall()
 
 

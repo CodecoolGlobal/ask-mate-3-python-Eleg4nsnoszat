@@ -18,22 +18,24 @@ button {
   background-color: #f89097;
   border: none;
   color: #313752;
-  padding: 7px 15px;
+  padding: 5px 7px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 12px;
   margin: 2px 1px;
   cursor: pointer;
+  border-radius: 30px;
 }
 .cover {
   margin: 25px;
-  width: 350px;
+  width: 250px;
   padding: 5px;
   background-color: #cca6b0;
   border-radius: 20px;
   box-shadow: 0 10px 40px #E3B4B4, 0 0 0 10px #E3B4B4;
   box-sizing: border-box;
+
 }
 input[type="text"] {
   width: 100%;

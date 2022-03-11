@@ -7,6 +7,11 @@ import time
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
 
+'''Put filename and save image to data manager!'''
+'''Remove methods if not used'''
+'''Modify data manager queries like question tag(not f string)'''
+'''url_for documentation to read'''
+
 
 def get_filename():
     image = request.files['image']
