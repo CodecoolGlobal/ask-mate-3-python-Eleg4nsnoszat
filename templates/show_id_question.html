@@ -1,95 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Question nr. {{ question_id}}</title>
-        <style>
-            .tag {
-                border: 2px solid red;
-                padding: 10px;
-                border-radius: 25px;
-                display: inline;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Question nr. {{ question_id}}</h1>
-        <strong>Tags: </strong>
-        {% for tag in all_tags_for_question %}
-            <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
+{% extends 'skeleton.html' %}
+{% block title %}Question nr. {{ question_id}}{% endblock %}
+{% block body %}
+    <h1>Question nr. {{ question_id}}</h1>
+    <strong>Tags: </strong>
+    {% for tag in all_tags_for_question %}
+        <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
+    {% endfor %}
+    <br>
+    <br>
+    <strong>{{ question["title"]}}</strong>
+    <p>{{ question["message"]}}</p><br>
+    <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
+    <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
+    <br>
+    <h2>Answers</h2>
+    <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Submission Time</th>
+            <th>Vote Number</th>
+            <th>Question ID</th>
+            <th>Answer Message</th>
+            <th>Image</th>
+        </tr>
+        {% for answer_item in answers %}
+        <tr>
+        <td>{{ answer_item["id"] }}</td>
+        <td>{{ answer_item["submission_time"] }}</td>
+        <td>{{ answer_item["vote_number"] }}</td>
+        <td>{{ answer_item["question_id"] }}</td>
+        <td><a href="/show-answer-comments/{{ answer_item["id"] }}">{{ answer_item["message"] }}</a></td>
+            <td>
+                {% if answer_item["image"] %}
+                    <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
+                {% endif %}
+            </td>
+
+        <td>
+            <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
+        </td>
+        <td>
+            <a href="/answer/{{ answer_item.get('id')}}/vote-up">Upvote</a>
+        </td>
+        <td>
+            <a href="/answer/{{ answer_item.get('id')}}/vote-down">Downvote</a>
+        </td>
+        <td>
+            <a href="/answer/{{ answer_item.get('id')}}/new-comment">Add comment</a>
+        </td>
+        <td>
+            <a href="/answer/{{ answer_item.get('id') }}/edit">Edit answer</a>
+        </td>
+        </tr>
         {% endfor %}
-        <br>
-        <br>
-        <strong>{{ question["title"]}}</strong>
-        <p>{{ question["message"]}}</p><br>
-        <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
-        <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
-        <br>
-        <h2>Answers</h2>
-        <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
-        <table>
+    </table>
+    <br>
+    <h2>Comments</h2>
+    <a href="/question/{{ question_id }}/new-comment">New Comment</a><br>
+     <table>
+        <tr>
+            <th>Message</th>
+            <th>Submission Time</th>
+        </tr>
+        {% for comment in comments %}
             <tr>
-                <th>ID</th>
-                <th>Submission Time</th>
-                <th>Vote Number</th>
-                <th>Question ID</th>
-                <th>Answer Message</th>
-                <th>Image</th>
+                <td>{{ comment.message }}</td>
+                <td>{{ comment.submission_time }}</td>
+                <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
+                <td>Edited {{ comment.edited_count }} times</td>
+                <td><a href="/comments/{{ comment.id }}/delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-trash-o" style="font-size: 24px"></i></a></td>
             </tr>
-            {% for answer_item in answers %}
-            <tr>
-            <td>{{ answer_item["id"] }}</td>
-            <td>{{ answer_item["submission_time"] }}</td>
-            <td>{{ answer_item["vote_number"] }}</td>
-            <td>{{ answer_item["question_id"] }}</td>
-            <td><a href="/show-answer-comments/{{ answer_item["id"] }}">{{ answer_item["message"] }}</a></td>
-                <td>
-                    {% if answer_item["image"] %}
-                        <img src="/static/uploads/{{ answer_item["image"] }}" width="100">
-                    {% endif %}
-                </td>
-
-            <td>
-                <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
-            </td>
-            <td>
-                <a href="/answer/{{ answer_item.get('id')}}/vote-up">Upvote</a>
-            </td>
-            <td>
-                <a href="/answer/{{ answer_item.get('id')}}/vote-down">Downvote</a>
-            </td>
-            <td>
-                <a href="/answer/{{ answer_item.get('id')}}/new-comment">Add comment</a>
-            </td>
-            <td>
-                <a href="/answer/{{ answer_item.get('id') }}/edit">Edit answer</a>
-            </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br>
-        <h2>Comments</h2>
-        <a href="/question/{{ question_id }}/new-comment">New Comment</a><br>
-         <table>
-            <tr>
-                <th>Message</th>
-                <th>Submission Time</th>
-            </tr>
-            {% for comment in comments %}
-                <tr>
-                    <td>{{ comment.message }}</td>
-                    <td>{{ comment.submission_time }}</td>
-                    <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
-                    <td>Edited {{ comment.edited_count }} times</td>
-                    <td><a href="/comments/{{ comment.id }}/delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-trash-o" style="font-size: 24px"></i></a></td>
-                </tr>
-            {% endfor %}
-
-
-        </table>
-        <br>
-        <a href="/">Back to main Page</a>
-
-    </body>
-</html>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">Back to main Page</a>
+{% endblock %}
