@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Add New Comment</title>
-    </head>
-    <body>
-        <h1>Add New Comment</h1>
+{% extends 'skeleton.html' %}
+{% block title %}Edit Answer nr. {{ answer_id }}{% endblock %}
+{% block body %}
+    <h1>Add New Comment</h1>
     <form action="/question/{{ question_id }}/new-comment" method="post">
-            <br><label for="message">Your comment:</label><br>
-                <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
-            <br><button type="submit">Send</button>
+        <br><label for="message">Your comment:</label><br>
+        <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
+        <br><button type="submit">Send</button>
     </form>
-    </body>
-</html>
+{% endblock %}

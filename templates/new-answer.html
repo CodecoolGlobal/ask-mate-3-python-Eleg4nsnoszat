@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Add New Answer</title>
-    </head>
-    <body>
-        <h1>Add New Answer</h1>
+{% extends 'skeleton.html' %}
+{% block title %}Add New Answer{% endblock %}
+{% block body %}
+    <h1>Add New Answer</h1>
     <form action="/question/{{ question_id }}/new-answer" method="post" enctype="multipart/form-data">
-            <br><label for="message">Answer message:</label><br>
-                <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
-            <br><label for="image">image:</label><br>
-                <input type="file" name="image" id="image" accept="image/*"><br>
-            <br><button type="submit">Send</button>
-        </form>
-    </body>
-</html>
+        <br><label for="message">Answer message:</label><br>
+        <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
+        <br><label for="image">image:</label><br>
+        <input type="file" name="image" id="image" accept="image/*"><br>
+        <br><button type="submit">Send</button>
+    </form>
+{% endblock %}

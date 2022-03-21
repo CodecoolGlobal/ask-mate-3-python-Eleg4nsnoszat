@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Add New Tag</title>
-    </head>
-    <body>
-        <h1>Add New Tag</h1>
+{% extends 'skeleton.html' %}
+{% block title %}Add New Tag{% endblock %}
+{% block body %}
+    <h1>Add New Tag</h1>
     <form action="/question/{{ question_id }}/new-tag" method="post">
         <input type="text" name="name" list="all_tags">
         <datalist id="all_tags">
@@ -13,7 +9,6 @@
                 <option value="{{ tag.name }}">{{ tag.name }}</option>
             {% endfor %}
         </datalist>
-            <br><button type="submit">Add</button>
+        <br><button type="submit">Add</button>
     </form>
-    </body>
-</html>
+{% endblock %}
