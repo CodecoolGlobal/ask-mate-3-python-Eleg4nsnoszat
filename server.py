@@ -221,7 +221,7 @@ def edit_comment(comment_id):
             return redirect('/question/' + str(question_id))
         else:
             question = data_manager.get_question_by_answer_id(answer_id)
-            question_id = question['id']
+            question_id = question['question_id']
             return redirect('/question/' + str(question_id))
 
 
