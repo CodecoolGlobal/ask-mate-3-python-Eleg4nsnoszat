@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import data_manager
 import os
 from werkzeug.utils import secure_filename
 import time
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\xec]/'
 UPLOAD_FOLDER = 'static/uploads/'
 
 '''Put filename and save image to data manager!'''
@@ -54,7 +55,12 @@ def list_question_page():
 def main_page():
     if request.method == 'GET':
         latest_questions = data_manager.get_latest_questions('submission_time', 'DESC')
-        return render_template('index.html', latest_questions=latest_questions)
+        if 'username' in session:
+            username = session['username']
+            return render_template('index.html', latest_questions=latest_questions, username=username)
+        else:
+            return render_template('index.html', latest_questions=latest_questions, username='')
+
     if request.method == 'POST':
         _order_by = request.form['order_by']
         _order_direction = request.form['order_direction']
@@ -71,14 +77,22 @@ def show_question_answers(question_id):
     all_tags_for_question = data_manager.get_tags_by_question_id(question_id)
     if request.method == 'GET':
         data_manager.update_view_number(question_id)
-        return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                               comments=comments, all_tags_for_question=all_tags_for_question)
-
+        if 'username' in session:
+            username = session['username']
+            return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
+                               comments=comments, all_tags_for_question=all_tags_for_question, username=username)
+        else:
+            return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
+                               comments=comments, all_tags_for_question=all_tags_for_question, username='')
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'GET':
-        return render_template('add-question.html')
+        if session.get('username'):
+            return render_template('add-question.html')
+        else:
+            return redirect(url_for("login"))
+
     elif request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
@@ -92,7 +106,11 @@ def add_question():
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
     if request.method == 'GET':
-        return render_template('new-answer.html', question_id=question_id)
+        if session.get('username'):
+            return render_template('new-answer.html', question_id=question_id)
+        else:
+            return redirect(url_for("login"))
+
     elif request.method == 'POST':
         image_name = get_filename()
         save_image()
@@ -266,6 +284,48 @@ def edit_answer(answer_id):
     message = request.form['message']
     data_manager.update_answer(message, answer_id)
     return redirect("/question/" + str(question_id['question_id']))
+
+
+@app.route("/registration", methods=["GET", "POST"])
+def registration():
+    if request.method == "GET":
+        return render_template("registration.html")
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if data_manager.check_registration(username) == None:
+            hashed_password = data_manager.hash_password(password)
+            data_manager.registration(username, hashed_password)
+            return redirect("/")
+        else:
+            return redirect(url_for("registration"))
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        if session.get('username'):
+            return redirect("/")
+        else:
+            return render_template("login.html")
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        hashed_password = data_manager.get_hashed_password(username)
+        verify_password = data_manager.verify_password(password, hashed_password['password'])
+        if verify_password:
+            session['username'] = request.form['username']
+            session['user_id'] = data_manager.get_user_id_by_username(username)
+            return redirect(url_for("main_page"))
+        else:
+            pass
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":

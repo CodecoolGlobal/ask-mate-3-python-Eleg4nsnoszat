@@ -2,8 +2,16 @@
 {% block title %}All Questions{% endblock %}
 {% block body %}
     <h1>Ask Mate - All Questions</h1>
-    <a href="/add-question">Add new Question</a><br>
+    {% if username != '' %}
+        <a href="/add-question">Add new Question</a><br>
+    {% endif %}
     <a href="/list">List all questions</a><br>
+    <a href="/registration">Registration</a><br>
+    {% if username != '' %}
+        <a href="/logout">Log out</a>
+    {% else %}
+        <a href="/login">Login</a><br>
+    {% endif %}
     <br><form action="/" method="post">
         <label for="order_by"><strong>Sort by:</strong></label>
         <input type="radio" name="order_by" value="title">Title

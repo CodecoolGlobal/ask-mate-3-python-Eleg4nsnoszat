@@ -1,6 +1,16 @@
 from psycopg2 import sql
-
 import connection
+import bcrypt
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
 
 @connection.connection_handler
@@ -238,3 +248,30 @@ def search_questions(cursor, search_input, order_by, order_direction):
                 WHERE title ILIKE %(search_input)s ORDER BY {} {}"""
     cursor.execute(sql.SQL(query).format(sql.Identifier(order_by), sql.SQL(order_direction)))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def registration(cursor, username, password):
+    query = """INSERT INTO users VALUES (default, %(username)s, %(password)s, CURRENT_TIMESTAMP)"""
+    cursor.execute(query, {'username': username, 'password': password})
+
+
+@connection.connection_handler
+def get_hashed_password(cursor, username):
+    query = """SELECT password FROM users WHERE username = %(username)s"""
+    cursor.execute(query, {'username': username})
+    return cursor.fetchone()
+
+@connection.connection_handler
+def get_user_id_by_username(cursor, username):
+    query = """SELECT user_id FROM users WHERE username = %(username)s"""
+    cursor.execute(query, {'username': username})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def check_registration(cursor, username):
+    query = """SELECT username FROM users WHERE username = %(username)s"""
+    cursor.execute(query, {'username': username})
+    return cursor.fetchone()
+

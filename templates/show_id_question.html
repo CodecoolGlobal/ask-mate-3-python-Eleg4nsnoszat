@@ -14,7 +14,9 @@
     <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
     <br>
     <h2>Answers</h2>
-    <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
+    {%  if username != '' %}
+        <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
+    {% endif %}
     <table>
         <tr>
             <th>ID</th>
