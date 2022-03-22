@@ -33,7 +33,8 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    image text
+    image text,
+    author_id integer
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -43,7 +44,8 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    image text
+    image text,
+    author_id integer
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -53,7 +55,8 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    edited_count integer
+    edited_count integer,
+    author_id integer
 );
 
 
@@ -78,6 +81,15 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY question
     ADD CONSTRAINT pk_question_id PRIMARY KEY (id);
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
+
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
 
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT pk_question_tag_id PRIMARY KEY (question_id, tag_id);
