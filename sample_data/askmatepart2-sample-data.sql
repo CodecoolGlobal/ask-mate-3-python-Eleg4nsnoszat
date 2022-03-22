@@ -15,6 +15,12 @@ ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS pk_ques
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_tag_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS pk_user_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.question DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.answer DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+
+
 
 
 DROP TABLE IF EXISTS public.users;
@@ -34,7 +40,8 @@ CREATE TABLE question (
     title text,
     message text,
     image text,
-    author_id integer
+    author_id integer,
+    username text
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -45,7 +52,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text,
-    author_id integer
+    author_id integer,
+    username text
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -56,7 +64,8 @@ CREATE TABLE comment (
     message text,
     submission_time timestamp without time zone,
     edited_count integer,
-    author_id integer
+    author_id integer,
+    username text
 );
 
 

@@ -22,30 +22,27 @@
         </form>
     <table>
         <tr>
-            <th>ID</th>
             <th>Submission Time</th>
             <th>View Number</th>
             <th>Vote Number</th>
             <th>Question Title</th>
             <th>Question Message</th>
             <th>Image</th>
+            <th>Author</th>
         </tr>
         {% for question in all_questions %}
         <tr>
-        {% for fieldname, item in question.items() %}
-             <td>{% if fieldname=="title" %}
-                <a href="/question/{{ question.id}}">
-                      {% endif %}
-             {% if fieldname=="image" and item != None %}
-                <img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="30">
-             {% else %}
-                {{ item }}
-             {% endif %}
-        {% if fieldname=="title" %}
-            </a>
-        {% endif %}
-            </td>
-        {% endfor %}
+        <td>{{ question.submission_time }}</td>
+        <td>{{ question.view_number }}</td>
+        <td>{{ question.vote_number }}</td>
+        <td><a href="/question/{{ question.id}}">{{ question.title }}</a></td>
+        <td>{{ question.message }}</td>
+            {% if question.image %}
+            <td><img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="30"></td>
+            {% else %}
+            <td> </td>
+            {% endif %}
+        <td>{{ question.username }}</td>
         <td>
             <a href="/question/{{ question["id"] }}/delete">Delete</a>
         </td>
