@@ -8,6 +8,7 @@
     <a href="/list">List all questions</a><br>
     <a href="/registration">Registration</a><br>
     {% if username != '' %}
+        <a href="/user/{{ user_id }}">My profile</a><br>
         <a href="/logout">Log out</a>
     {% else %}
         <a href="/login">Login</a><br>
