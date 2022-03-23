@@ -291,6 +291,12 @@ def delete_tag(question_id, tag_id):
     return redirect("/question/" + str(question_id))
 
 
+@app.route("/tags")
+def show_tags():
+    tags = data_manager.get_all_tags_by_question()
+    return render_template("show-tags.html", tags=tags)
+
+
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
     answer = data_manager.get_answer_by_answer_id(answer_id)

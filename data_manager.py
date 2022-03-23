@@ -151,6 +151,17 @@ def get_question_by_answer_id(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_all_tags_by_question(cursor):
+    query = """SELECT tag.name, COUNT(question_tag.question_id) as number_of_questions
+    FROM question_tag
+    JOIN tag
+    ON question_tag.tag_id = tag.id
+    GROUP BY tag.name"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_answer_by_answer_id(cursor, answer_id):
     query = """SELECT * FROM answer WHERE id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
