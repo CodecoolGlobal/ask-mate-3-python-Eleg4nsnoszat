@@ -296,7 +296,56 @@ def check_registration(cursor, username):
 
 
 @connection.connection_handler
+def get_all_user_data(cursor, user_id):
+    query = """SELECT user_id, username, registration_date FROM users WHERE user_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_num_of_asked_questions_by_user_id(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_questions FROM question WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_asked_questions_by_user_id(cursor, user_id):
+    query = """SELECT * FROM question WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_num_of_user_answers(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_answers FROM answer WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_answers_by_user_id(cursor, user_id):
+    query = """SELECT * FROM answer WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_num_of_user_comments(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_comments FROM comment WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_comments_by_user_id(cursor, user_id):
+    query = """SELECT * FROM comment WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
 def get_username_by_user_id(cursor, user_id):
     query = """SELECT username FROM users WHERE user_id = %(user_id)s"""
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
+

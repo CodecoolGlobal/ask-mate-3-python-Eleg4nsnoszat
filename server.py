@@ -57,9 +57,12 @@ def main_page():
         latest_questions = data_manager.get_latest_questions('submission_time', 'DESC')
         if 'username' in session:
             username = session['username']
-            return render_template('index.html', latest_questions=latest_questions, username=username)
+            user_id = session['user_id']
+            user_id = user_id['user_id']
+            return render_template('index.html', latest_questions=latest_questions,
+                                   username=username, user_id=str(user_id))
         else:
-            return render_template('index.html', latest_questions=latest_questions, username='')
+            return render_template('index.html', latest_questions=latest_questions, username='', user_id=None)
 
     if request.method == 'POST':
         _order_by = request.form['order_by']
@@ -334,6 +337,24 @@ def login():
             return redirect("/")
         else:
             return render_template("login.html", error=error)
+
+
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    user_data = data_manager.get_all_user_data(user_id)
+    asked_questions_num = data_manager.get_num_of_asked_questions_by_user_id(user_id)
+    asked_questions_num = asked_questions_num['user_questions']
+    asked_questions = data_manager.get_asked_questions_by_user_id(user_id)
+    user_answers_num = data_manager.get_num_of_user_answers(user_id)
+    user_answers_num = user_answers_num['user_answers']
+    user_answers = data_manager.get_user_answers_by_user_id(user_id)
+    comments_num = data_manager.get_num_of_user_comments(user_id)
+    comments_num = comments_num['user_comments']
+    user_comments = data_manager.get_user_comments_by_user_id(user_id)
+    print(user_comments)
+    return render_template('user-page.html', user_data=user_data, asked_questions_num=asked_questions_num,
+                           asked_questions=asked_questions, user_answers_num=user_answers_num,
+                           user_answers=user_answers, comments_num=comments_num, user_comments=user_comments)
 
 
 @app.route('/logout')
