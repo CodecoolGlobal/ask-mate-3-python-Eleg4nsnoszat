@@ -83,10 +83,10 @@ def show_question_answers(question_id):
         if 'username' in session:
             username = session['username']
             return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                               comments=comments, all_tags_for_question=all_tags_for_question, username=username)
+                                   comments=comments, all_tags_for_question=all_tags_for_question, username=username)
         else:
             return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                               comments=comments, all_tags_for_question=all_tags_for_question, username='')
+                                   comments=comments, all_tags_for_question=all_tags_for_question, username='')
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -367,6 +367,15 @@ def user_page(user_id):
 def logout():
     session.pop('username', None)
     return redirect(url_for('main_page'))
+
+
+@app.route("/users")
+def list_users():
+    if session.get('username'):
+        users_info = data_manager.users_info()
+        return render_template("users.html", users_info=users_info)
+    else:
+        return redirect(url_for("main_page"))
 
 
 if __name__ == "__main__":
