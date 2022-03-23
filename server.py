@@ -306,34 +306,34 @@ def registration():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
-        if data_manager.check_registration(username) == None:
+        if data_manager.check_registration(username) is None:
             hashed_password = data_manager.hash_password(password)
             data_manager.registration(username, hashed_password)
             return redirect("/")
         else:
             return redirect(url_for("registration"))
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        if session.get('username'):
-            return redirect("/")
-        else:
-            return render_template("login.html")
-
+    error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        all_users = data_manager.get_usernames()
+        username = request.form.get("username", "")
+        password = request.form.get("password", '')
         hashed_password = data_manager.get_hashed_password(username)
-        verify_password = data_manager.verify_password(password, hashed_password['password'])
-        if verify_password:
+        verify_password = data_manager.verify_password(password, hashed_password)
+        if verify_password is True:
             session['username'] = request.form['username']
             session['user_id'] = data_manager.get_user_id_by_username(username)
             return redirect(url_for("main_page"))
         else:
-            return redirect(url_for('login'))
+            error = 'Invalid email and/or password. Please try again.'
+            return render_template("login.html", error=error)
+    else:
+        if session.get('username'):
+            return redirect("/")
+        else:
+            return render_template("login.html", error=error)
 
 
 @app.route('/logout')
