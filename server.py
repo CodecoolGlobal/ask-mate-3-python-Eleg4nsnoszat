@@ -57,9 +57,12 @@ def main_page():
         latest_questions = data_manager.get_latest_questions('submission_time', 'DESC')
         if 'username' in session:
             username = session['username']
-            return render_template('index.html', latest_questions=latest_questions, username=username)
+            user_id = session['user_id']
+            user_id = user_id['user_id']
+            return render_template('index.html', latest_questions=latest_questions,
+                                   username=username, user_id=str(user_id))
         else:
-            return render_template('index.html', latest_questions=latest_questions, username='')
+            return render_template('index.html', latest_questions=latest_questions, username='', user_id=None)
 
     if request.method == 'POST':
         _order_by = request.form['order_by']
@@ -288,6 +291,12 @@ def delete_tag(question_id, tag_id):
     return redirect("/question/" + str(question_id))
 
 
+@app.route("/tags")
+def show_tags():
+    tags = data_manager.get_all_tags_by_question()
+    return render_template("show-tags.html", tags=tags)
+
+
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
     answer = data_manager.get_answer_by_answer_id(answer_id)
@@ -306,8 +315,7 @@ def registration():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
-        if data_manager.check_registration(username) == None:
+        if data_manager.check_registration(username) is None:
             hashed_password = data_manager.hash_password(password)
             data_manager.registration(username, hashed_password)
             return redirect("/")
@@ -317,24 +325,42 @@ def registration():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        if session.get('username'):
-            return redirect("/")
-        else:
-            return render_template("login.html")
-
+    error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        all_users = data_manager.get_usernames()
+        username = request.form.get("username", "")
+        password = request.form.get("password", '')
         hashed_password = data_manager.get_hashed_password(username)
-        verify_password = data_manager.verify_password(password, hashed_password['password'])
-        if verify_password:
+        verify_password = data_manager.verify_password(password, hashed_password)
+        if verify_password is True:
             session['username'] = request.form['username']
             session['user_id'] = data_manager.get_user_id_by_username(username)
             return redirect(url_for("main_page"))
         else:
-            return redirect(url_for('login'))
+            error = 'Invalid email and/or password. Please try again.'
+            return render_template("login.html", error=error)
+    else:
+        if session.get('username'):
+            return redirect("/")
+        else:
+            return render_template("login.html", error=error)
+
+
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    user_data = data_manager.get_all_user_data(user_id)
+    asked_questions_num = data_manager.get_num_of_asked_questions_by_user_id(user_id)
+    asked_questions_num = asked_questions_num['user_questions']
+    asked_questions = data_manager.get_asked_questions_by_user_id(user_id)
+    user_answers_num = data_manager.get_num_of_user_answers(user_id)
+    user_answers_num = user_answers_num['user_answers']
+    user_answers = data_manager.get_user_answers_by_user_id(user_id)
+    comments_num = data_manager.get_num_of_user_comments(user_id)
+    comments_num = comments_num['user_comments']
+    user_comments = data_manager.get_user_comments_by_user_id(user_id)
+    print(user_comments)
+    return render_template('user-page.html', user_data=user_data, asked_questions_num=asked_questions_num,
+                           asked_questions=asked_questions, user_answers_num=user_answers_num,
+                           user_answers=user_answers, comments_num=comments_num, user_comments=user_comments)
 
 
 @app.route('/logout')

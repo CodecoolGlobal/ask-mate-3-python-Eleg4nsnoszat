@@ -7,6 +7,7 @@
         <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
     {% endfor %}
     <br>
+    <a href="{{ url_for('show_tags') }}">List all tags</a><br>
     <br>
     <strong>{{ question["title"]}}</strong>
     <p>{{ question["message"]}}</p><br>

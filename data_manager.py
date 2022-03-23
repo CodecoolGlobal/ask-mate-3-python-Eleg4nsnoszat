@@ -9,6 +9,8 @@ def hash_password(plain_text_password):
 
 
 def verify_password(plain_text_password, hashed_password):
+    if hashed_password is None:
+        return False
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
@@ -149,6 +151,17 @@ def get_question_by_answer_id(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_all_tags_by_question(cursor):
+    query = """SELECT tag.name, COUNT(question_tag.question_id) as number_of_questions
+    FROM question_tag
+    JOIN tag
+    ON question_tag.tag_id = tag.id
+    GROUP BY tag.name"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_answer_by_answer_id(cursor, answer_id):
     query = """SELECT * FROM answer WHERE id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
@@ -275,7 +288,9 @@ def registration(cursor, username, password):
 def get_hashed_password(cursor, username):
     query = """SELECT password FROM users WHERE username = %(username)s"""
     cursor.execute(query, {'username': username})
-    return cursor.fetchone()
+    query_result = cursor.fetchone()
+    return query_result["password"] if query_result is not None else query_result
+
 
 
 @connection.connection_handler
@@ -293,6 +308,54 @@ def check_registration(cursor, username):
 
 
 @connection.connection_handler
+def get_all_user_data(cursor, user_id):
+    query = """SELECT user_id, username, registration_date FROM users WHERE user_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_num_of_asked_questions_by_user_id(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_questions FROM question WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_asked_questions_by_user_id(cursor, user_id):
+    query = """SELECT * FROM question WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_num_of_user_answers(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_answers FROM answer WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_answers_by_user_id(cursor, user_id):
+    query = """SELECT * FROM answer WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_num_of_user_comments(cursor, user_id):
+    query = """SELECT COUNT(author_id) AS user_comments FROM comment WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_comments_by_user_id(cursor, user_id):
+    query = """SELECT * FROM comment WHERE author_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
 def get_username_by_user_id(cursor, user_id):
     query = """SELECT username FROM users WHERE user_id = %(user_id)s"""
     cursor.execute(query, {'user_id': user_id})

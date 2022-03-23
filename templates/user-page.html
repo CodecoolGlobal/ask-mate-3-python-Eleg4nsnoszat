@@ -1,0 +1,92 @@
+{% extends 'skeleton.html' %}
+{% block title %}User page{% endblock %}
+{% block body %}
+    <h1>User data - {{ user_data.username }}</h1>
+    <table>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Registration date</th>
+            <th>Number of asked questions</th>
+            <th>Number of answers</th>
+            <th>Number of comments</th>
+            <th>Reputation</th>
+        </tr>
+        <tr>
+            <td>{{ user_data.user_id }}</td>
+            <td><a href="/user/{{ user_data.user_id }}">{{ user_data.username }}</a></td>
+            <td>{{ user_data.registration_date }}</td>
+            <td>{{ asked_questions_num }}</td>
+            <td>{{ user_answers_num }}</td>
+            <td>{{ comments_num }}</td>
+        </tr>
+    </table>
+    <h2>Asked questions by {{ user_data.username }}</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Image</th>
+            <th>Submission Time</th>
+            <th>View Number</th>
+            <th>Vote Number</th>
+        </tr>
+        {% for question in asked_questions %}
+        <tr>
+            <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
+            <td>{{ question.message }}</td>
+            <td>
+                {% if question.image %}
+                    <img src="/static/uploads/{{ question.image }}" width="100">
+                {% endif %}
+            </td>
+            <td>{{ question.submission_time }}</td>
+            <td>{{ question.view_number }}</td>
+            <td>{{ question.vote_number }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <h2>All answers by {{ user_data.username }}</h2>
+    <table>
+        <tr>
+            <th>Answer</th>
+            <th>Image</th>
+            <th>Submission Time</th>
+            <th>Vote Number</th>
+        </tr>
+        {% for answer in user_answers %}
+        <tr>
+            <td><a href="/show-answer-comments/{{ answer.id }}">{{ answer.message }}</a></td>
+            <td>
+                {% if answer.image %}
+                    <img src="/static/uploads/{{ answer.image }}" width="100">
+                {% endif %}
+            </td>
+            <td>{{ answer.submission_time }}</td>
+            <td>{{ answer.vote_number }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+        <h2>All comments by {{ user_data.username }}</h2>
+    <table>
+        <tr>
+            <th>Comment</th>
+            <th>Submission Time</th>
+            <th>Edits</th>
+        </tr>
+        {% for comment in user_comments %}
+        <tr>
+            <td>
+                {% if comment.question_id %}
+                    <a href="/question/{{ comment.question_id }}">{{ comment.message }}</a>
+                {% else %}
+                    <a href="/show-answer-comments/{{ comment.answer_id }}">{{ comment.message }}</a>
+                {% endif %}
+            </td>
+            <td>{{ comment.submission_time }}</td>
+            <td>{{ comment.edited_count }}</td>
+        {% endfor %}
+        </tr>
+    </table>
+    <p><a href="/">Back to main Page</a></p>
+{% endblock %}
