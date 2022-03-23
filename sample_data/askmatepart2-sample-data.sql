@@ -28,7 +28,8 @@ CREATE TABLE users (
     user_id serial NOT NULL,
     username text,
     password text,
-    registration_date date
+    registration_date date,
+    reputation integer
 );
 
 DROP TABLE IF EXISTS public.question;

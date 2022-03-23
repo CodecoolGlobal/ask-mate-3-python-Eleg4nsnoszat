@@ -269,7 +269,7 @@ def search_questions(cursor, search_input, order_by, order_direction):
 
 @connection.connection_handler
 def registration(cursor, username, password):
-    query = """INSERT INTO users VALUES (default, %(username)s, %(password)s, CURRENT_TIMESTAMP)"""
+    query = """INSERT INTO users VALUES (default, %(username)s, %(password)s, CURRENT_TIMESTAMP, 0)"""
     cursor.execute(query, {'username': username, 'password': password})
 
 
@@ -297,7 +297,7 @@ def check_registration(cursor, username):
 
 @connection.connection_handler
 def get_all_user_data(cursor, user_id):
-    query = """SELECT user_id, username, registration_date FROM users WHERE user_id = %(user_id)s"""
+    query = """SELECT * FROM users WHERE user_id = %(user_id)s"""
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
