@@ -9,6 +9,8 @@ def hash_password(plain_text_password):
 
 
 def verify_password(plain_text_password, hashed_password):
+    if hashed_password is None:
+        return False
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
@@ -22,10 +24,19 @@ def get_questions(cursor, order_by, order_direction):
 
 
 @connection.connection_handler
-def add_question(cursor, title, message, image):
+def get_usernames(cursor):
+    query = """SELECT username FROM users;"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_question(cursor, title, message, image, author_id, username):
     query = """INSERT INTO question
-                VALUES (default, CURRENT_TIMESTAMP, 0, 0, %(title)s, %(message)s, NULLIF (%(image)s, ''));"""
-    cursor.execute(query, {'title': title, 'message': message, 'image': image})
+                VALUES (default, CURRENT_TIMESTAMP, 0, 0, %(title)s, %(message)s, NULLIF (%(image)s, ''),
+                %(author_id)s, %(username)s);"""
+    cursor.execute(query, {'title': title, 'message': message, 'image': image, 'author_id': author_id,
+                           'username': username})
 
 
 @connection.connection_handler
@@ -113,10 +124,11 @@ def delete_question_image(cursor, question_id):
 
 
 @connection.connection_handler
-def add_new_answer(cursor, question_id, message, image):
+def add_new_answer(cursor, question_id, message, image, author_id, username):
     query = """INSERT INTO answer VALUES (DEFAULT, CURRENT_TIMESTAMP, 0,%(question_id)s, %(message)s, 
-    NULLIF (%(image)s, ''))"""
-    cursor.execute(query, {'question_id': question_id, 'message': message, 'image': image})
+    NULLIF (%(image)s, ''), %(author_id)s, %(username)s)"""
+    cursor.execute(query, {'question_id': question_id, 'message': message, 'image': image,
+                           'author_id': author_id, 'username': username})
 
 
 @connection.connection_handler
@@ -146,27 +158,32 @@ def get_answer_by_answer_id(cursor, answer_id):
 
 
 @connection.connection_handler
-def add_new_comment_to_question(cursor, question_id, message):
-    query = """INSERT INTO comment VALUES (default, %(question_id)s, NULL, %(message)s, CURRENT_TIMESTAMP, 0)"""
-    cursor.execute(query, {'question_id': question_id, 'message': message})
+def add_new_comment_to_question(cursor, question_id, message, author_id, username):
+    query = """INSERT INTO comment VALUES (default, %(question_id)s, NULL, %(message)s, CURRENT_TIMESTAMP, 0, 
+    %(author_id)s, %(username)s)"""
+    cursor.execute(query, {'question_id': question_id, 'message': message,
+                           'author_id': author_id, 'username': username})
 
 
 @connection.connection_handler
 def get_comments_by_question_id(cursor, question_id):
-    query = """SELECT id, message, submission_time, edited_count FROM comment WHERE question_id = %(question_id)s"""
+    query = """SELECT id, message, submission_time, edited_count, username FROM comment 
+    WHERE question_id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def add_new_comment_to_answer(cursor, answer_id, message):
-    query = """INSERT INTO comment VALUES (default, NULL, %(answer_id)s, %(message)s, CURRENT_TIMESTAMP, 0)"""
-    cursor.execute(query, {'answer_id': answer_id, 'message': message})
+def add_new_comment_to_answer(cursor, answer_id, message, author_id, username):
+    query = """INSERT INTO comment VALUES (default, NULL, %(answer_id)s, %(message)s, CURRENT_TIMESTAMP, 0,
+     %(author_id)s, %(username)s)"""
+    cursor.execute(query, {'answer_id': answer_id, 'message': message,
+                           'author_id': author_id, 'username': username})
 
 
 @connection.connection_handler
 def get_comments_by_answer(cursor, answer_id):
-    query = """SELECT id, message, submission_time FROM comment WHERE answer_id = %(answer_id)s"""
+    query = """SELECT id, message, submission_time, username FROM comment WHERE answer_id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchall()
 
@@ -260,7 +277,9 @@ def registration(cursor, username, password):
 def get_hashed_password(cursor, username):
     query = """SELECT password FROM users WHERE username = %(username)s"""
     cursor.execute(query, {'username': username})
-    return cursor.fetchone()
+    query_result = cursor.fetchone()
+    return query_result["password"] if query_result is not None else query_result
+
 
 @connection.connection_handler
 def get_user_id_by_username(cursor, username):
@@ -324,4 +343,9 @@ def get_user_comments_by_user_id(cursor, user_id):
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchall()
 
+
+def get_username_by_user_id(cursor, user_id):
+    query = """SELECT username FROM users WHERE user_id = %(user_id)s"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
 

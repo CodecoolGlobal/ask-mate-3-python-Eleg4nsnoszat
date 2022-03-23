@@ -88,6 +88,7 @@ def show_question_answers(question_id):
             return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
                                comments=comments, all_tags_for_question=all_tags_for_question, username='')
 
+
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'GET':
@@ -100,8 +101,11 @@ def add_question():
         title = request.form['title']
         message = request.form['message']
         image_name = get_filename()
+        author = session.get('user_id')
+        author_id = author['user_id']
+        user = session.get('username')
         save_image()
-        data_manager.add_question(title, message, image_name)
+        data_manager.add_question(title, message, image_name, author_id, user)
         question_id = data_manager.get_question_id()
         return redirect('/question/' + str(question_id['id']))
 
@@ -118,7 +122,10 @@ def add_new_answer(question_id):
         image_name = get_filename()
         save_image()
         message = request.form['message']
-        data_manager.add_new_answer(question_id, message, image_name)
+        author = session.get('user_id')
+        author_id = author['user_id']
+        username = session.get('username')
+        data_manager.add_new_answer(question_id, message, image_name, author_id, username)
         return redirect('/question/' + question_id)
 
 
@@ -204,7 +211,10 @@ def add_comment_to_question(question_id):
         return render_template("new-comment.html", question_id=question_id)
     if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_new_comment_to_question(question_id, message)
+        author = session.get('user_id')
+        author_id = author['user_id']
+        username = session.get('username')
+        data_manager.add_new_comment_to_question(question_id, message, author_id, username)
         return redirect('/question/' + str(question_id))
 
 
@@ -215,7 +225,10 @@ def add_comment_to_answer(answer_id):
         return render_template("new-comment-answer.html", answer_id=answer_id)
     if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_new_comment_to_answer(answer_id, message)
+        author = session.get('user_id')
+        author_id = author['user_id']
+        username = session.get('username')
+        data_manager.add_new_comment_to_answer(answer_id, message, author_id, username)
         return redirect('/question/' + str(question_id['question_id']))
 
 
@@ -296,8 +309,7 @@ def registration():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
-        if data_manager.check_registration(username) == None:
+        if data_manager.check_registration(username) is None:
             hashed_password = data_manager.hash_password(password)
             data_manager.registration(username, hashed_password)
             return redirect("/")
@@ -307,23 +319,24 @@ def registration():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        if session.get('username'):
-            return redirect("/")
-        else:
-            return render_template("login.html")
-
+    error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "")
+        password = request.form.get("password", '')
         hashed_password = data_manager.get_hashed_password(username)
-        verify_password = data_manager.verify_password(password, hashed_password['password'])
-        if verify_password:
+        verify_password = data_manager.verify_password(password, hashed_password)
+        if verify_password is True:
             session['username'] = request.form['username']
             session['user_id'] = data_manager.get_user_id_by_username(username)
             return redirect(url_for("main_page"))
         else:
-            pass
+            error = 'Invalid email and/or password. Please try again.'
+            return render_template("login.html", error=error)
+    else:
+        if session.get('username'):
+            return redirect("/")
+        else:
+            return render_template("login.html", error=error)
 
 
 @app.route('/user/<user_id>')
