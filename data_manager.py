@@ -94,8 +94,8 @@ def upvote_answer(cursor, answer_id):
 @connection.connection_handler
 def downvote_question(cursor, question_id):
     query = """UPDATE question
-                SET vote_number = vote_number - 1
-                WHERE id = %(question_id)s"""
+    SET vote_number = vote_number - 1
+    WHERE question.id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
 
 
@@ -365,7 +365,7 @@ def get_username_by_user_id(cursor, user_id):
 @connection.connection_handler
 def users_info(cursor):
     query = """select users.user_id, users.username,
-                        users.registration_date,
+                        users.registration_date, users.reputation, 
                         count(distinct answer.id)   as number_of_answers,
                         count(distinct question.id) as number_of_questions,
                         count(distinct comment.id)  as number_of_comments
@@ -377,3 +377,19 @@ def users_info(cursor):
 
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def lose_reputation(cursor, author_id, points):
+    query = """UPDATE users
+    SET reputation = reputation - %(points)s
+    WHERE user_id = %(author_id)s"""
+    cursor.execute(query, {'author_id': author_id, 'points': points})
+
+
+@connection.connection_handler
+def gain_reputation(cursor, author_id, points):
+    query = """UPDATE users
+    SET reputation = reputation + %(points)s
+    WHERE user_id = %(author_id)s"""
+    cursor.execute(query, {'author_id': author_id, 'points': points})

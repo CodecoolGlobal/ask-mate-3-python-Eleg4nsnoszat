@@ -181,27 +181,39 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/vote-up", methods=['GET', 'POST'])
 def vote_up_question(question_id):
+    question = data_manager.get_question_details_by_id(question_id)
+    author_id = question['author_id']
     data_manager.upvote_question(question_id)
+    data_manager.gain_reputation(author_id, 5)
     return redirect('/list')
 
 
 @app.route("/question/<question_id>/vote-down", methods=['GET', 'POST'])
 def vote_down_question(question_id):
+    question = data_manager.get_question_details_by_id(question_id)
+    author_id = question['author_id']
     data_manager.downvote_question(question_id)
+    data_manager.lose_reputation(author_id, 2)
     return redirect('/list')
 
 
 @app.route("/answer/<answer_id>/vote-down", methods=['GET', 'POST'])
 def vote_down_answer(answer_id):
     question_id = data_manager.get_question_by_answer_id(answer_id)
+    answer = data_manager.get_answer_by_answer_id(answer_id)
+    author_id = answer['author_id']
     data_manager.downvote_answer(answer_id)
+    data_manager.lose_reputation(author_id, 2)
     return redirect('/question/' + str(question_id['question_id']))
 
 
 @app.route("/answer/<answer_id>/vote-up", methods=['GET', 'POST'])
 def vote_up_answer(answer_id):
     question_id = data_manager.get_question_by_answer_id(answer_id)
+    answer = data_manager.get_answer_by_answer_id(answer_id)
+    author_id = answer['author_id']
     data_manager.upvote_answer(answer_id)
+    data_manager.gain_reputation(author_id, 10)
     return redirect('/question/' + str(question_id['question_id']))
 
 
