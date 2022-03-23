@@ -9,6 +9,8 @@ def hash_password(plain_text_password):
 
 
 def verify_password(plain_text_password, hashed_password):
+    if hashed_password is None:
+        return False
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
@@ -275,7 +277,9 @@ def registration(cursor, username, password):
 def get_hashed_password(cursor, username):
     query = """SELECT password FROM users WHERE username = %(username)s"""
     cursor.execute(query, {'username': username})
-    return cursor.fetchone()
+    query_result = cursor.fetchone()
+    return query_result["password"] if query_result is not None else query_result
+
 
 @connection.connection_handler
 def get_user_id_by_username(cursor, username):
@@ -296,4 +300,3 @@ def get_username_by_user_id(cursor, user_id):
     query = """SELECT username FROM users WHERE user_id = %(user_id)s"""
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
-
