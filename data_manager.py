@@ -364,7 +364,7 @@ def get_username_by_user_id(cursor, user_id):
 
 @connection.connection_handler
 def users_info(cursor):
-    query = """select users.username,
+    query = """select users.user_id, users.username,
                         users.registration_date,
                         count(distinct answer.id)   as number_of_answers,
                         count(distinct question.id) as number_of_questions,

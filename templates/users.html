@@ -15,7 +15,7 @@
     <tbody>
     {% for user in users_info %}
         <tr>
-            <td>{{ user['username'] }}</td>
+            <td><a href="user/{{ user['user_id'] }}">{{ user['username'] }}</a></td>
             <td>{{ user['registration_date'] }}</td>
             <td>{{ user['number_of_questions'] }}</td>
             <td>{{ user['number_of_answers'] }}</td>
