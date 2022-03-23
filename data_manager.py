@@ -277,6 +277,7 @@ def get_hashed_password(cursor, username):
     cursor.execute(query, {'username': username})
     return cursor.fetchone()
 
+
 @connection.connection_handler
 def get_user_id_by_username(cursor, username):
     query = """SELECT user_id FROM users WHERE username = %(username)s"""
@@ -297,3 +298,19 @@ def get_username_by_user_id(cursor, user_id):
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
+
+@connection.connection_handler
+def users_info(cursor):
+    query = """select users.username,
+                        users.registration_date,
+                        count(distinct answer.id)   as number_of_answers,
+                        count(distinct question.id) as number_of_questions,
+                        count(distinct comment.id)  as number_of_comments
+                    from users
+                        left join answer on users.user_id = answer.author_id
+                        left join question on users.user_id = question.author_id
+                        left join comment on users.user_id = comment.author_id
+                    group by users.user_id"""
+
+    cursor.execute(query)
+    return cursor.fetchall()
