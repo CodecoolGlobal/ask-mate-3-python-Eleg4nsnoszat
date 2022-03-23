@@ -1,18 +1,31 @@
 {% extends 'skeleton.html' %}
 {% block title %}Add New Question{% endblock %}
-{% block body %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+    Fun fact about css! <br>
+        It's a pain in the ass if you have tables in html.
+    </div>
+    </section>
+{% endblock %}
+    {% block h1 %}
     <h1>Add New Question</h1>
+    {% endblock %}
+{% block content %}
     <form action="/add-question" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{{question_id}}"><br>
         <input type="hidden" name="submission_time" value="{{submission_time}}"><br>
         <input type="hidden" name="view_number" value="{{view_number}}"><br>
         <input type="hidden" name="vote_number" value="{{vote_number}}"><br>
         <label for="title">Question Title:</label><br>
-        <input type="text" name="title" size="20" id="title" minlength="5" required><br>
+        <br>
+        <input type="text" name="title" size="20" id="title" minlength="5" required class="questiontitlearea"><br>
         <br><label for="message">Question message:</label><br>
-        <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
-        <br><label for="image">image:</label><br>
-        <input type="file" name="image" id="image" accept="image/*"><br>
-        <br><button type="submit">Send</button>
+        <br>
+        <textarea name="message" rows="4" cols="40" id="message" required class="textarea"></textarea><br>
+        <br>
+        <br>
+        <input type="file" name="image" id="image" accept="image/*" class="file"><br>
+        <br><button type="submit" class="btn">Send</button>
     </form>
 {% endblock %}
