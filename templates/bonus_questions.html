@@ -1,7 +1,4 @@
 {% extends 'skeleton.html' %}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
-    </head>
 {% block content %}
         <h1>AskMate</h1>
         <h2>All Questions:</h2>
@@ -33,4 +30,8 @@
                 {% endfor %}
             </tbody>
         </table>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
 {% endblock %}
