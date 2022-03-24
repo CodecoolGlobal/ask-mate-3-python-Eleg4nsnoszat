@@ -42,7 +42,6 @@ body{
 }
 
 table {
-    height: 100%!important;
     max-height: 50%;
 	width: 100%;
 	border-collapse: collapse;
