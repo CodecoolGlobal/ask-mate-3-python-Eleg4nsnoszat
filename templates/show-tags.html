@@ -1,7 +1,27 @@
 {% extends 'skeleton.html' %}
 {% block title %}Tag page{% endblock %}
-{% block body %}
-    <h1>All tags</h1>
+{% block h1 %}<h1>All tags</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong> Cool Things To Do With JavaScript.</strong><br><br>
+    Without coding many cool things we can do with javascript. Programming language JavaScript has evolved drastically over the years.
+    Let’s have a look at all of the cool things that YOU can do with JavaScript:
+        <br>
+        <br>
+    1. Animate Websites
+        <br>
+    2. Make Phone Apps
+        <br>
+    3. Make Serverless Websites
+        <br>
+    4. Make Games
+        <br>
+    5. Flying Drones
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <table>
         <tr>
             <th>Tag</th>
@@ -15,5 +35,5 @@
         {% endfor %}
     </table>
     <br>
-    <a href="/">Back to main Page</a>
+    <a href="/"><h2>Back to main Page</h2></a>
 {% endblock %}

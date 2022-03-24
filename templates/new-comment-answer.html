@@ -1,7 +1,19 @@
 {% extends 'skeleton.html' %}
 {% block title %}Add New Comment{% endblock %}
-{% block body %}
-    <h1>Add New Comment</h1>
+ {% block h1 %}<h1>Add New Comment</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>End Of Life For Python 2.7.</strong><br><br>
+    The survey showed that there are 84% of Python 3 main interpreter users and only 16% for Python 2. Python 3 had an
+        increase in users from 75% in 2017. As the use of Python 3 continues to grow rapidly, the use of Python 2 is declining as it
+        is no longer actively developed, also does not get new features, and thus the end of life has been moved to 2020. However,
+        the declaration does not guarantee that bugfix releases will be made on a regular basis, but it should enable volunteers who want
+        to contribute bugfixes for Python 2.7 and it should satisfy vendors who still have to support Python 2 for years to come.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <form action="/answer/{{ answer_id }}/new-comment" method="post">
         <br><label for="message">Your comment:</label><br>
         <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>

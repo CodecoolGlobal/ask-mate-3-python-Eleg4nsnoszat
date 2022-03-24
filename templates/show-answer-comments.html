@@ -1,23 +1,35 @@
 {% extends 'skeleton.html' %}
 {% block title %}Answer nr. {{ answer_id}}{% endblock %}
-{% block body %}
-    <h1>Answer nr. {{ answer_id }}</h1>
+{% block h1 %}<h1>Answer nr. {{ answer_id }}</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>JavaScript engine.</strong><br><br>
+    JavaScript engine is a computer program that executes JavaScript (JS) code. Every browser provides a JS engine that
+        runs the JavaScript code. This engine was a rudimentary interpreter with no optimizations. Running the JavaScript
+        code with this engine was slow but it worked.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <table>
         <tr>
             <th>Message</th>
             <th>Submission Time</th>
             <th>Author</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
         {% for comment in comments %}
         <tr>
             <td>{{ comment["message"] }}</td>
             <td>{{ comment["submission_time"] }}</td>
             <td>{{ comment["username"] }}</td>
-            <td><a href="/comment/{{ comment["id"] }}/edit">Edit comment</a></td>
-            <td><a href="/comments/{{ comment["id"] }}/delete" onclick="return confirm('Are you sure you want to delete?');" ><i class="fa fa-trash-o" style="font-size: 24px"></i></a></td>
+            <td><a href="/comment/{{ comment["id"] }}/edit"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td><a href="/comments/{{ comment["id"] }}/delete" onclick="return confirm('Are you sure you want to delete?');" ><i class="fa-solid fa-trash-can"></i></a></td>
         </tr>
         {% endfor %}
     </table>
     <br>
-    <a href="/question/{{ question_id['question_id'] }}">Back to question</a>
+    <a href="/question/{{ question_id['question_id'] }}"><h2>Back to question<h2></a>
 {% endblock %}

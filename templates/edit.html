@@ -1,19 +1,32 @@
 {% extends 'skeleton.html' %}
 {% block title %}Edit Question nr. {{ question['id'] }}{% endblock %}
-{% block body %}
-    <h1>Edit Question nr. {{ question['id'] }}</h1>
+    {% block h1 %}<h1>Edit Question nr. {{ question['id'] }}</h1>{% endblock %}
+    {% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>The first programming language was called FORTRAN.</strong><br><br>
+    It was developed by a team lead by Mr. John Backus, an American computer scientist. First appearing in 1964, FORTRAN is still in use today,
+        predominantly helping computer scientists to conduct complex tests in areas such as numerical weather prediction, geophysics, crystallography,
+        and computational chemistry.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <form action="/question/{{ question['id'] }}/edit" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{{ question['id'] }}"><br>
         <input type="hidden" name="submission_time" value="{{question['submission_time'] }}"><br>
         <input type="hidden" name="view_number" value="{{question['view_number'] }}"><br>
         <input type="hidden" name="vote_number" value="{{question['vote_number'] }}"><br>
-        <label for="title">Question Title:</label><br>
-        <input type="text" name="title" size="20" id="title" value="{{ question['title']}}" minlength="5" required><br>
-        <br><label for="message">Question message:</label><br>
-        <textarea name="message" rows="4" cols="40" id="message" required>{{ question['message']}}</textarea><br>
-        <br><label for="image">Modify image:</label><br>
-        <input type="file" name="image" id="image" accept="image/*"><br>
-        <a href="/question/{{ question["id"] }}/edit/remove-image">Delete uploaded image</a>
-        <br><button type="submit">Send</button>
+        <label for="title"><strong>Question Title:</strong></label><br>
+        <br>
+        <input type="text" name="title" size="20" id="title" value="{{ question['title']}}" minlength="5" required class="questiontitlearea"><br>
+        <br><label for="message"><strong>Question message:</strong></label><br>
+        <br>
+        <textarea name="message" rows="4" cols="40" id="message" required class="textarea">{{ question['message']}}</textarea><br>
+        <br><label for="image"><strong>Modify image:</strong></label><br>
+        <br>
+        <input type="file" name="image" id="image" accept="image/*" class="file"><br>
+        <a href="/question/{{ question["id"] }}/edit/remove-image"><h2>Delete uploaded image</h2></a>
+        <br><button type="submit" class="btn">Send</button>
     </form>
 {% endblock %}

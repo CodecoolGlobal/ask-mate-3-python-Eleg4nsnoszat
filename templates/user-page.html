@@ -1,7 +1,19 @@
 {% extends 'skeleton.html' %}
 {% block title %}User page{% endblock %}
-{% block body %}
-    <h1>User data - {{ user_data.username }}</h1>
+{% block h1 %}<h1>User data - {{ user_data.username }}</h1>{% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <p><a href="/"><h2>Back to main Page</h2></a></p>
+        <hr>
+        <h2>Fun Fact:</h2><hr> <br> <strong> Web Applications.</strong><br><br>
+        The way PCs and browsers have continued to improve is the way creation of web apps have been boosted too.
+        Apps like Google Maps, as amazing as it is, is benefiting from Javascript.
+    </div>
+    </section>
+{% endblock %}
+
+{% block content %}
     <table>
         <tr>
             <th>User ID</th>
@@ -89,5 +101,4 @@
         {% endfor %}
         </tr>
     </table>
-    <p><a href="/">Back to main Page</a></p>
 {% endblock %}

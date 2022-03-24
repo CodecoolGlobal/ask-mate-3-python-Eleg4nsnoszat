@@ -1,13 +1,21 @@
 {% extends 'skeleton.html' %}
 {% block title %}All Questions{% endblock %}
-{% block body %}
-    <h1>Ask Mate - All Questions</h1>
-    <a href="/add-question">Add new Question</a><br>
-    <a href="/">Back to main Page</a>
+    {% block h1 %}<h1>Ask Mate - All Questions</h1> {% endblock %}
+{% block sidebar %}
+    <br>
+    <br>
+    <h2><a href="/add-question">Add new Question</a></h2>
+    <hr>
+    <h2><a href="/">Back to main Page</a></h2>
+    <hr>
         <form action="/list" method="post">
+{% endblock %}
+            {% block  content %}
+            <br>
             <div class="cover">
              <div class="tb">
-            <div class="td"> <input id="search" placeholder="Search" type="text" name="search"></div>
+            <div class="td"> <input id="search" placeholder="Search" type="text" name="search" class="logintextarea"></div>
+             <br>
              </div>
                 </div>
             <label for="order_by"><strong>Sort by:</strong></label>
@@ -16,7 +24,8 @@
             <input type="radio" name="order_by" value="submission_time" checked>Submission Time
             <input type="radio" name="order_by" value="view_number">View Number
             <input type="radio" name="order_by" value="vote_number">Vote Number
-            <br><label for="order_direction"><strong>Order direction:</strong></label>
+            <br>
+            <label for="order_direction"><strong>Order direction:</strong></label>
             <input type="radio" name="order_direction" value="ASC">Ascending
             <input type="radio" name="order_direction" value="DESC" checked>Descending
         </form>
@@ -29,6 +38,9 @@
             <th>Question Message</th>
             <th>Image</th>
             <th>Author</th>
+            <th>Upvote</th>
+            <th>Downvote</th>
+            <th>Delete</th>
         </tr>
         {% for question in all_questions %}
         <tr>
@@ -44,13 +56,13 @@
             {% endif %}
         <td>{{ question.username }}</td>
         <td>
-            <a href="/question/{{ question["id"] }}/delete">Delete</a>
+            <a href="/question/{{ question["id"] }}/vote-up"><i class="fa-solid fa-thumbs-up"></i></a>
         </td>
         <td>
-            <a href="/question/{{ question["id"] }}/vote-up">Upvote</a>
+            <a href="/question/{{ question["id"] }}/vote-down"><i class="fa-solid fa-thumbs-down"></i></a>
         </td>
         <td>
-            <a href="/question/{{ question["id"] }}/vote-down">Downvote</a>
+            <a href="/question/{{ question["id"] }}/delete"><i class="fa-solid fa-trash-can"></i></a>
         </td>
         </tr>
         {% endfor %}
