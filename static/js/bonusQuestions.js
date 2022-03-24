@@ -63,6 +63,7 @@ function getFilteredItems(items, filterValue) {
         filterWord = wordParts[1]
         }
 
+
     if(filterValue.includes('!')){
         return items.filter(function (item) {
             return !item[columnCapitalized].toLowerCase().includes(filterWord.toLowerCase());
@@ -74,6 +75,7 @@ function getFilteredItems(items, filterValue) {
         });
     }
     }
+
 
 
 function toggleTheme() {

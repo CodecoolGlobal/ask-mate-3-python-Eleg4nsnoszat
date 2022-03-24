@@ -273,8 +273,8 @@ def update_answer(cursor, message, answer_id):
 @connection.connection_handler
 def search_questions(cursor, search_input, order_by, order_direction):
     query = """SELECT * FROM question
-                WHERE title ILIKE %(search_input)s ORDER BY {} {}"""
-    cursor.execute(sql.SQL(query).format(sql.Identifier(order_by), sql.SQL(order_direction)))
+                WHERE title ILIKE {} ORDER BY {} {}"""
+    cursor.execute(sql.SQL(query).format(sql.Literal('%'+search_input+'%'), sql.Identifier(order_by), sql.SQL(order_direction)))
     return cursor.fetchall()
 
 
