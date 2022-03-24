@@ -4,23 +4,37 @@ function getSortedItems(items, sortField, sortDirection) {
     console.log(sortField)
     console.log(sortDirection)
 
-    // === SAMPLE CODE ===
-    // if you have not changed the original html uncomment the code below to have an idea of the
-    // effect this function has on the table
-    //
-    if (sortDirection === "asc") {
-        const firstItem = items.shift()
-        if (firstItem) {
-            items.push(firstItem)
-        }
-    } else {
-        const lastItem = items.pop()
-        if (lastItem) {
-            items.push(lastItem)
-        }
+    for(let item of items){
+        let voteCount = item['VoteCount']
+        let voteCountNew = parseInt(voteCount)
+        item['VoteCount'] = voteCountNew
+        let viewNumber = item['ViewNumber']
+        let viewNumberNew = parseInt(viewNumber)
+        item['ViewNumber'] = viewNumberNew
     }
 
-    return items
+    if(sortDirection === 'asc') {
+       return items.sort(function(x, y) {
+          if (x[sortField] < y[sortField]) {
+            return -1;
+          }
+          if (x[sortField] > y[sortField]) {
+            return 1;
+          }
+          return 0;
+        });
+
+    } else {
+       return items.sort(function(x, y) {
+          if (x[sortField] > y[sortField]) {
+            return -1;
+          }
+          if (x[sortField] < y[sortField]) {
+            return 1;
+          }
+          return 0;
+        });
+    }
 }
 
 // you receive an array of objects which you must filter by all it's keys to have a value matching "filterValue"
