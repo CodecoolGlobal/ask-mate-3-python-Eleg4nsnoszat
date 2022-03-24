@@ -28,16 +28,39 @@ function getFilteredItems(items, filterValue) {
     console.log(items)
     console.log(filterValue)
 
-    // === SAMPLE CODE ===
-    // if you have not changed the original html uncomment the code below to have an idea of the
-    // effect this function has on the table
-    //
-    for (let i=0; i<filterValue.length; i++) {
-        items.pop()
+    let filterWord = filterValue;
+    let columnCapitalized = 'Title';
+
+    if(filterWord.includes(':')){
+        let wordParts = filterWord.split(':');
+        let column = wordParts[0];
+        columnCapitalized = column.charAt(0).toUpperCase() + column.slice(1);
+        if(columnCapitalized.includes('!')) {
+            let filterParts = columnCapitalized.split('!');
+            let column = filterParts[1]
+            columnCapitalized = column.charAt(0).toUpperCase() + column.slice(1);
+            }
+        filterWord = wordParts[1];
     }
 
-    return items
-}
+
+    if(filterWord.includes('!')){
+        let wordParts = filterWord.split('!')
+        filterWord = wordParts[1]
+        }
+
+    if(filterValue.includes('!')){
+        return items.filter(function (item) {
+            return !item[columnCapitalized].toLowerCase().includes(filterWord.toLowerCase());
+        });
+
+    } else {
+        return items.filter(function (item) {
+            return item[columnCapitalized].toLowerCase().includes(filterWord.toLowerCase());
+        });
+    }
+    }
+
 
 function toggleTheme() {
     console.log("toggle theme")

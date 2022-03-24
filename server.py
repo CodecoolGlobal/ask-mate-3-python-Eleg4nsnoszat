@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import data_manager
+import bonus_questions
 import os
 from werkzeug.utils import secure_filename
 import time
@@ -388,6 +389,12 @@ def list_users():
         return render_template("users.html", users_info=users_info)
     else:
         return redirect(url_for("main_page"))
+
+
+@app.route("/bonus-questions")
+def bonus_questions_list():
+    questions = bonus_questions.SAMPLE_QUESTIONS
+    return render_template("bonus_questions.html", questions=questions)
 
 
 if __name__ == "__main__":
