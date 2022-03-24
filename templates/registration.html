@@ -1,22 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'skeleton.html' %}
+    {% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>Most popular programming languages:</strong><br><br>
+    According to the Stack OverFlow study, JavaScript is the most popular programming language in 2020. The next places
+        are occupied by HTML / CSS and SQL. Technologies such as Ruby, Java and Python have maintained a stable position
+        over the years.
+    </div>
+    </section>
+{% endblock %}
     <title>Registration</title>
-</head>
-<body>
+{% block content %}
 
 <form action="/registration" method="post">
-    <h1>Register</h1>
+    {% block h1 %}<h1>Register</h1>{% endblock %}
     <p>Please fill in this form to create an account.</p>
     <hr>
 
     <label for="username"><b>Email</b></label>
-    <input type="email" placeholder="Enter Email" name="username" id="username" required>
-
+    <input type="email" placeholder="Enter Email" name="username" id="username" class="logintextarea"required>
+    <br>
+    <br>
     <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+    <input type="password" placeholder="Enter Password" name="password" id="password" class="logintextarea" required>
     <hr>
-    <button type="submit">Register</button>
+    <button type="submit"class="btn">Register</button>
 </form>
-</body>
-</html>
+{% endblock %}
+

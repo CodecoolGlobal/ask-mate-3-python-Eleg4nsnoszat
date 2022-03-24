@@ -3,13 +3,15 @@
 {% block sidebar %}
     <section>
     <div class="menu">
-    Fun fact about css! <br>
-        It's a pain in the ass if you have tables in html.
+    <hr><h2>Fun Fact:</h2><hr> <br> <strong>Null And NaN.</strong><br><br>
+    In the JavaScript language, the definition of Null is the total absence of meaningful value and it is counted as an object in the programming language.
+    On the other hand, NaN or Not-a-Number is actually counted as a number but that does not mean it is equal to anything and in order to confirm that something is NaN,
+        then it must be represented by the function isNaN().
     </div>
     </section>
 {% endblock %}
     {% block h1 %}
-    <h1>Add New Question</h1>
+        <h1>Add New Question</h1>
     {% endblock %}
 {% block content %}
     <form action="/add-question" method="post" enctype="multipart/form-data">
@@ -17,10 +19,10 @@
         <input type="hidden" name="submission_time" value="{{submission_time}}"><br>
         <input type="hidden" name="view_number" value="{{view_number}}"><br>
         <input type="hidden" name="vote_number" value="{{vote_number}}"><br>
-        <label for="title">Question Title:</label><br>
+        <label for="title"><strong>Question Title:</strong></label><br>
         <br>
         <input type="text" name="title" size="20" id="title" minlength="5" required class="questiontitlearea"><br>
-        <br><label for="message">Question message:</label><br>
+        <br><label for="message"><strong>Question message:</strong></label><br>
         <br>
         <textarea name="message" rows="4" cols="40" id="message" required class="textarea"></textarea><br>
         <br>

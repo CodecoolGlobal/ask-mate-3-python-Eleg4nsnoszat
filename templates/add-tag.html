@@ -1,14 +1,30 @@
 {% extends 'skeleton.html' %}
 {% block title %}Add New Tag{% endblock %}
-{% block body %}
+    {% block h1 %}
     <h1>Add New Tag</h1>
+    {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>The first computer virus was a Creeper.</strong><br><br>
+    Just like a virus infects a human body by replicating versions of itself to pass on to other hosts, a computer virus spreads by inserting its own code and spreading to new computers via networks.
+The idea of a computer virus was published in the essay “Theory of self-reproducing automata” by John von Neumann in 1949, but the first replicating computer program was not written until 1971.
+        The program was not actively malicious software as it caused no damage to data, the only effect being a message it output to the teletype reading “I’M THE CREEPER; CATCH ME IF YOU CAN”.
+The virus was not created to bring harm, but it did not take long for the idea of self-replicating software to turn to the dark side. Good news, there are “ethical hackers” out there that work for the good guys. In fact, it’s a great career field!
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
+    <br>
+    <br>
     <form action="/question/{{ question_id }}/new-tag" method="post">
-        <input type="text" name="name" list="all_tags">
+        <input type="text" name="name" list="all_tags" class="logintextarea">
         <datalist id="all_tags">
             {% for tag in all_tags %}
                 <option value="{{ tag.name }}">{{ tag.name }}</option>
             {% endfor %}
         </datalist>
-        <br><button type="submit">Add</button>
+        <br><button type="submit"class="btn">Add</button>
+    <hr>
     </form>
 {% endblock %}

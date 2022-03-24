@@ -1,7 +1,18 @@
 {% extends 'skeleton.html' %}
 {% block title %}List all users{% endblock %}
-{% block body %}
-<h1>List all users</h1>
+{% block h1 %}<h1>List all users</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <h2>Fun Fact:</h2><hr> <br> <strong> Server and Client.</strong><br><br>
+        Since Node came onto the scene, Javascript is now a famous server-side language too. This is a massive benefit
+        for several developers since they now use one language and technologies on the front and back end. It also aids
+        a brand new part of Javascript development that is quite famous. This is a great plus and can preserve the time that
+        will be wasted learning two different languages.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
 <table>
     <thead>
     <tr>
@@ -27,5 +38,5 @@
     </tbody>
 </table>
 <br>
-    <a href="/">Back to main Page</a>
+    <a href="/"><h2>Back to main Page</h2></a>
 {% endblock %}

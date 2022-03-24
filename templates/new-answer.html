@@ -1,12 +1,27 @@
 {% extends 'skeleton.html' %}
 {% block title %}Add New Answer{% endblock %}
-{% block body %}
-    <h1>Add New Answer</h1>
+{% block h1 %}<h1>Add New Answer</h1>{% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>Coding can “power up” your brain.</strong><br><br>
+    Learning to code has definite cognitive benefits – creative problem-solving, critical thinking, and developing teamwork skills.
+        Research dating back to 1991 has demonstrated and confirmed that coders developed higher cognitive skills on average,
+        and that coding or other intellectually stimulating activities dramatically reduced the chances of degenerative diseases such as Alzheimer’s.
+    Today, soft and hard skills are equally important, but those who know how to work in teams, solve problems, pay attention to details, and experience
+        mistakes as learning experiences will have way more possibility to become the leaders of tomorrow.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <form action="/question/{{ question_id }}/new-answer" method="post" enctype="multipart/form-data">
-        <br><label for="message">Answer message:</label><br>
-        <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
-        <br><label for="image">image:</label><br>
-        <input type="file" name="image" id="image" accept="image/*"><br>
-        <br><button type="submit">Send</button>
+        <br><label for="message"><h2>Answer message:</h2></label><br>
+        <hr>
+        <br>
+        <textarea name="message" rows="4" cols="40" id="message" required class="textarea"></textarea><br>
+        <br>
+        <input type="file" name="image" id="image" accept="image/*" class="file"><br>
+        <br>
+        <br><button type="submit"class="btn">Send</button>
     </form>
 {% endblock %}

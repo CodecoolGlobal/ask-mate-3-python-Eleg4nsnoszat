@@ -1,22 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
+{% extends 'skeleton.html' %}
+{% block title %}Add New Question{% endblock %}
+    {% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>The world’s first programmer was a woman.</strong><br><br>
+    Ada Lovelace, born in the year 1815, was the world’s first programmer. She started to work on the analytical engine in the early 18th century. She has developed the first computer program, a century before the first computer was created.
+    She was an English mathematician and writer, best known for working on Charles Babbage’s Analytical Engine, a mechanical computer.
+    Ada Lovelace was the first to recognize that people could use the computer for more than just calculations, and she published the first algorithm designed for such a machine. As a consequence, she is often referred to as the world’s first computer programmer.
+    </div>
+    </section>
+{% endblock %}
+    {% block h1 %}<h1>Login</h1>{% endblock %}
     <p>Please fill in this form to login.</p>
-    <hr>
+    {% block content %}
+        <br>
+        <br>
+        <br>
     <form action="{{ url_for('login') }}" method="post">
-        <label for="username"><b>Email</b></label>
-        <input type="email" placeholder="Enter Email" name="username" id="username" required>
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" id="password" required>
+        <label for="username"><b>Email:</b></label>
+        <input type="email" placeholder="Enter Email" name="username" id="username" class="logintextarea" required>
+        <br>
+        <br>
+        <label for="password"><b>Password:</b></label>
+        <input type="password" placeholder="Enter Password" name="password" id="password" class="logintextarea" required>
         <hr>
-        <button type="submit">Login</button>
+        <button type="submit" class="btn">Login</button>
     </form>
      {% if error %}
     <p><strong>Error:</strong>{{ error }}</p>
     {% endif %}
-</body>
-</html>
+    {% endblock %}

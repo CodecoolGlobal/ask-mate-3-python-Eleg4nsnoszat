@@ -1,10 +1,24 @@
 {% extends 'skeleton.html' %}
 {% block title %}Edit Answer nr. {{ answer_id }}{% endblock %}
-{% block body %}
-    <h1>Add New Comment</h1>
+{% block h1 %}<h1>Add New Comment</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>Python Is Ruling.</strong><br><br>
+    According to the Python Developers Survey 2018 results, 84% of Python users use Python as their main language,
+        on the other hand, 16% of the users use Python as their secondary language. The usage of Python as the main language
+        is up 5 percentage points from 79% in 2017. One interesting fact is that half of all Python users also use JavaScript. Also,
+        71% of the respondents of the survey install Python from python.org or with OS-provided package managers like APT and Homebrew.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <form action="/question/{{ question_id }}/new-comment" method="post">
-        <br><label for="message">Your comment:</label><br>
-        <textarea name="message" rows="4" cols="40" id="message" required></textarea><br>
-        <br><button type="submit">Send</button>
+        <br><label for="message"><h2>Your comment:</h2></label>
+        <br>
+        <hr>
+        <textarea name="message" rows="4" cols="40" id="message" required class="textarea"></textarea>
+        <br>
+        <br><button type="submit"class="btn">Send</button>
     </form>
 {% endblock %}

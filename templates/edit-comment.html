@@ -1,10 +1,25 @@
 {% extends 'skeleton.html' %}
 {% block title %}Edit Answer nr. {{ answer_id }}{% endblock %}
-{% block body %}
-    <h1>Edit Answer nr. {{ answer_id }}</h1>
+{% block h1 %}<h1>Edit Answer nr. {{ answer_id }}</h1>{% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>Computer Programming Language Diversity.</strong><br><br>
+    There are many countries that speak more than one language. According to VistaWide, Papua New Guinea is the country with the highest number of languages (820),
+    accounting for 11.86% of the world’s languages.  Indonesia comes as a close second with 742 languages, and Nigeria with more than 500.
+    Now imagine there’s a country where the people only speak in computer languages. If that happened, it would, at the very least, knock Nigeria off the third place!
+    In fact, Wikipedia currently lists over 700 programming languages. However, this list doesn’t feature some languages, like  Markup languages (an example is HTML.)
+    There are also other lists, such as FOLDOC, that includes more than 1,000 languages.
+    </div>
+    </section>
+{% endblock %}
+{% block content %}
     <form action="/comment/{{ comment_id }}/edit" method="post">
-        <label for="message">Edit comment message:</label><br>
-        <textarea name="message" rows="4" cols="40" id="message" required>{{ comment.message }}</textarea><br>
-        <br><button type="submit">Send</button>
+        <br>
+        <label for="message"><h2>Edit comment message:</h2></label>
+        <hr>
+        <br>
+        <textarea name="message" rows="4" cols="40" id="message" required class="textarea">{{ comment.message }}</textarea><br>
+        <br><button type="submit"class="btn">Send</button>
     </form>
 {% endblock %}

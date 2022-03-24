@@ -3,8 +3,22 @@
     {% block sidebar %}
     <section>
     <div class="menu">
-    Fun fact about css! <br>
-        It's a pain in the ass if you have tables in html.
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <hr>
+    <h2><a href="{{ url_for('show_tags') }}">List all tags</a><br></h2>
+        <hr>
+    <h2><a href="/question/{{ question_id}}/edit">Edit Question</a><br></h2>
+        <hr>
+    <h2><a href="{{ url_for('show_tags') }}">List all tags</a><br></h2>
+        <hr>
+    <h2><a href="/question/{{ question_id }}/new-tag">Add tag</a><br></h2>
+        <hr>
+    <h2><a href="/">Back to main Page</a></h2>
+        <hr>
     </div>
     </section>
 {% endblock %}
@@ -13,26 +27,18 @@
     {% endblock %}
 {% block content %}
     <br>
-    <br>
     <strong>Tags: </strong>
-    <br>
-    <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
-    <br>
-    <strong><h3>Question Title:</h3></strong>
     {% for tag in all_tags_for_question %}
         <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
     {% endfor %}
-    <br>
-    <a href="{{ url_for('show_tags') }}">List all tags</a><br>
-    <br>
+    <hr>
+    <strong><h3>Question Title:</h3></strong>
     <strong>{{ question["title"]}}</strong>
+    <br>
+    <br>
+    <hr>
     <strong><h3>Question message:</h3></strong>
     <p>{{ question["message"]}}</p><br>
-    <br>
-    <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
-    <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
-    <br>
-    <br>
     <h2>Answers</h2>
     {%  if username != '' %}
         <a href="/question/{{ question_id}}/new-answer">Add new Answer</a><br>
@@ -44,6 +50,12 @@
             <th>Answer Message</th>
             <th>Image</th>
             <th>Author</th>
+            <th>Upvote</th>
+            <th>Downvote</th>
+            <th>Delete</th>
+            <th>Comment</th>
+            <th>Edit</th>
+
         </tr>
         {% for answer_item in answers %}
         <tr>
@@ -57,19 +69,19 @@
             </td>
         <td>{{ answer_item["username"] }}</td>
         <td>
-            <a href="/answer/{{ answer_item.get('id')}}/delete">Delete</a>
+            <a href="/answer/{{ answer_item.get('id')}}/vote-up"><i class="fa-solid fa-thumbs-up"></i></a>
         </td>
         <td>
-            <a href="/answer/{{ answer_item.get('id')}}/vote-up">Upvote</a>
+            <a href="/answer/{{ answer_item.get('id')}}/vote-down"><i class="fa-solid fa-thumbs-down"></i></a>
         </td>
         <td>
-            <a href="/answer/{{ answer_item.get('id')}}/vote-down">Downvote</a>
+            <a href="/answer/{{ answer_item.get('id')}}/delete"><i class="fa-solid fa-trash-can"></i></a>
         </td>
         <td>
-            <a href="/answer/{{ answer_item.get('id')}}/new-comment">Add comment</a>
+            <a href="/answer/{{ answer_item.get('id')}}/new-comment"><i class="fa-solid fa-circle-plus"></i></a>
         </td>
         <td>
-            <a href="/answer/{{ answer_item.get('id') }}/edit">Edit answer</a>
+            <a href="/answer/{{ answer_item.get('id') }}/edit"><i class="fa-solid fa-pen-to-square"></i></a>
         </td>
         <td>
         <form method="post" action="/question/{{ question_id }}">
@@ -100,13 +112,15 @@
             <th>Message</th>
             <th>Submission Time</th>
             <th>Author</th>
+            <th>Edit</th>
+            <th>Edited</th>
         </tr>
         {% for comment in comments %}
             <tr>
                 <td>{{ comment.message }}</td>
                 <td>{{ comment.submission_time }}</td>
                 <td>{{ comment.username }}</td>
-                <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
+                <td><a href="/comment/{{ comment.id }}/edit"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 <td>Edited {{ comment.edited_count }} times</td>
                 <td><a href="/comments/{{ comment.id }}/delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-trash-o" style="font-size: 24px"></i></a></td>
             </tr>
