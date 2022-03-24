@@ -126,7 +126,7 @@ def delete_question_image(cursor, question_id):
 @connection.connection_handler
 def add_new_answer(cursor, question_id, message, image, author_id, username):
     query = """INSERT INTO answer VALUES (DEFAULT, CURRENT_TIMESTAMP, 0,%(question_id)s, %(message)s, 
-    NULLIF (%(image)s, ''), %(author_id)s, %(username)s)"""
+    NULLIF (%(image)s, ''), %(author_id)s, %(username)s, FALSE)"""
     cursor.execute(query, {'question_id': question_id, 'message': message, 'image': image,
                            'author_id': author_id, 'username': username})
 
