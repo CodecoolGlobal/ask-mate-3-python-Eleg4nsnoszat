@@ -1,15 +1,31 @@
 {% extends 'skeleton.html' %}
+{% block h1 %}<h1>Ask Mate</h1> {% endblock %}
+{% block sidebar %}
+    <section>
+    <div class="menu">
+        <hr><h2>Fun Fact:</h2><hr> <br> <strong>Coding can “power up” your brain.</strong><br><br>
+    Learning to code has definite cognitive benefits – creative problem-solving, critical thinking, and developing teamwork skills.
+        Research dating back to 1991 has demonstrated and confirmed that coders developed higher cognitive skills on average, and that coding or
+        other intellectually stimulating activities dramatically reduced the chances of degenerative diseases such as Alzheimer’s.
+Today, soft and hard skills are equally important, but those who know how to work in teams, solve problems, pay attention to details,
+        and experience mistakes as learning experiences will have way more possibility to become the leaders of tomorrow.
+    </div>
+    </section>
+{% endblock %}
+
 {% block content %}
-        <h1>AskMate</h1>
-        <h2>All Questions:</h2>
-        <button id="theme-button">Change Theme to Dark</button>
-        <button id="increase-font-button">Increase page font</button>
-        <button id="decrease-font-button">Decrease page font</button>
+        <h2>Bonus questions:</h2>
+        <button id="theme-button" class="btn">Change Theme to Dark</button>
+        <button id="increase-font-button"class="btn">Increase page font</button>
+        <button id="decrease-font-button"class="btn">Decrease page font</button>
+        <br>
         <input
                 data-table-body="doNotModifyThisId_QuestionsTableBody"
                 style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
                 type="text"
-                placeholder="filter questions by keywords">
+                placeholder="filter questions by keywords"
+                class="logintextarea">
+        <br>
         <table>
             <thead id="doNotModifyThisId_QuestionsTableHeader">
                 <tr>

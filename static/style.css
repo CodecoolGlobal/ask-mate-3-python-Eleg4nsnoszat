@@ -24,23 +24,29 @@ a:active {
 
 }
 .content{
+    overflow-y: scroll;
+    max-height: 100%;
   background-color: #E7E0E4;
 	font-family: 'Montserrat';
     width: 90%;
 }
 .webpage {
   display: flex; /* or inline-flex */
+   max-height: 100%;
     height: 100%;
 }
-body,html{
+body{
+    max-height: 100%;
   margin: 0px;
-    height: 100%;
+    height: 100vh;
 }
 
 table {
+    height: 100%!important;
+    max-height: 50%;
 	width: 100%;
 	border-collapse: collapse;
-	overflow: hidden;
+	overflow-y: scroll;
 	box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
