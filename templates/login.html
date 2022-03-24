@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <p>Please fill in this form to login.</p>
+    <hr>
+    <form action="{{ url_for('login') }}" method="post">
+        <label for="username"><b>Email</b></label>
+        <input type="email" placeholder="Enter Email" name="username" id="username" required>
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" id="password" required>
+        <hr>
+        <button type="submit">Login</button>
+    </form>
+     {% if error %}
+    <p><strong>Error:</strong>{{ error }}</p>
+    {% endif %}
+</body>
+</html>

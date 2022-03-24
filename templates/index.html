@@ -7,10 +7,20 @@
         <br>
         <br>
         <br>
-    <a href="/add-question" class="sidebar">Add new Question</a><br>
+    {% if username != '' %}
+        <a href="/add-question">Add new Question</a><br>
+    {% endif %}
         <br>
         <br>
     <a href="/list" class="sidebar">List all questions</a><br>
+        {% if username != '' %}
+            <a href="/users">List users</a><br>
+            <a href="/user/{{ user_id }}">My profile</a><br>
+            <a href="/logout">Log out</a>
+        {% else %}
+            <a href="/registration">Registration</a><br>
+            <a href="/login">Login</a><br>
+    {% endif %}
     </div>
     </section>
     {% endblock %}
@@ -20,33 +30,33 @@
         {% block content %}
             <div class="sortorder">
         <br><form action="/" method="post">
-            <div><strong>Sort by:</strong></div>
-            <label class="custom-radio">
+            <label for="order_by"><strong>Sort by:</strong></label>
+            <label class="container">
                 <input type="radio" name="order_by" value="title">Title
             <span class="checkmark"></span>
                 </label>
-            <label class="custom-radio">
+            <label class="container">
                 <input type="radio" name="order_by" value="message">Message
                 <span class="checkmark"></span>
                 </label>
-            <label class="custom-radio">
+            <label class="container">
                 <input type="radio" name="order_by" value="submission_time" checked>Submission Time
                 <span class="checkmark"></span>
                 </label>
-            <label class="custom-radio">
+            <label class="container">
                 <input type="radio" name="order_by" value="view_number">View Number
                 <span class="checkmark"></span>
                 </label>
-            <label class="custom-radio">
+            <label class="container">
                 <input type="radio" name="order_by" value="vote_number">Vote Number
                 <span class="checkmark"></span>
                 </label>
             <br><label for="order_direction"><strong>Order direction:</strong></label>
-                <label class="custom-radio">
+                <label class="container">
                 <input type="radio" name="order_direction" value="ASC">Ascending
                 <span class="checkmark"></span>
                 </label>
-            <label class="custom-radio">
+            <label class="container">
                 <input type="radio" name="order_direction" value="DESC" checked>Descending
                 <span class="checkmark"></span>
                 </label>
@@ -56,34 +66,31 @@
             </div>
         <table class="table table-hover">
             <tr>
-                <th>ID</th>
                 <th>Submission Time</th>
                 <th>View Number</th>
                 <th>Vote Number</th>
                 <th>Question Title</th>
                 <th>Question Message</th>
                 <th>Image</th>
+                <th>Author</th>
                 <th>Upvote</th>
-                <th>Down vote</th>
+                <th>Downvote</th>
                 <th>Delete</th>
             </tr>
             {% for question in latest_questions %}
-            <tr>
-            {% for fieldname, item in question.items() %}
-                 <td>{% if fieldname=="title" %}
-                    <a href="/question/{{ question.id}}">
-                          {% endif %}
-                 {% if fieldname=="image" and item != None %}
-                    <img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="30">
-                 {% else %}
-                    {{ item }}
-                 {% endif %}
-            {% if fieldname=="title" %}
-                </a>
+        <tr>
+        <td>{{ question.submission_time }}</td>
+        <td>{{ question.view_number }}</td>
+        <td>{{ question.vote_number }}</td>
+        <td><a href="/question/{{ question.id}}">{{ question.title }}</a></td>
+        <td>{{ question.message }}</td>
+            {% if question.image %}
+            <td><img src="{{ url_for('static', filename='uploads/' + question["image"]) }}" width="30"></td>
+            {% else %}
+            <td> </td>
             {% endif %}
-                </td>
-            {% endfor %}
-            <td>
+        <td>{{ question.username }}</td>
+        <td>
                 <a href="/question/{{ question["id"] }}/vote-up"><i class="fa-solid fa-thumbs-up"></i></a>
             </td>
             <td>
@@ -92,7 +99,7 @@
             <td>
                 <a href="/question/{{ question["id"] }}/delete"><i class="fa-solid fa-trash-can"></i></a>
             </td>
-            </tr>
-            {% endfor %}
+        </tr>
+        {% endfor %}
         </table>
     {% endblock %}

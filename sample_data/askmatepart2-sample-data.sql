@@ -15,6 +15,22 @@ ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS pk_ques
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_tag_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS pk_user_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.question DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.answer DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.comment DROP CONSTRAINT IF EXISTS fk_author_id CASCADE;
+
+
+
+
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE users (
+    user_id serial NOT NULL,
+    username text,
+    password text,
+    registration_date date,
+    reputation integer
+);
 
 DROP TABLE IF EXISTS public.question;
 CREATE TABLE question (
@@ -24,7 +40,9 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    image text
+    image text,
+    author_id integer,
+    username text
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -34,7 +52,9 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    image text
+    image text,
+    author_id integer,
+    username text
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -44,7 +64,9 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    edited_count integer
+    edited_count integer,
+    author_id integer,
+    username text
 );
 
 
@@ -60,6 +82,8 @@ CREATE TABLE tag (
     name text
 );
 
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_user_id PRIMARY KEY (user_id);
 
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
@@ -69,6 +93,15 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY question
     ADD CONSTRAINT pk_question_id PRIMARY KEY (id);
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
+
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE ;
 
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT pk_question_tag_id PRIMARY KEY (question_id, tag_id);
