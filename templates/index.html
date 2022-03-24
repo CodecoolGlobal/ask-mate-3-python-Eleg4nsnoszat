@@ -1,43 +1,83 @@
 {% extends 'skeleton.html' %}
-{% block title %}All Questions{% endblock %}
-{% block body %}
-    <h1>Ask Mate - All Questions</h1>
+    <!-- SIDEBAR -->
+    {% block sidebar %}
+    <section>
+    <div class="menu">
+        <br>
+        <br>
+        <br>
+        <br>
     {% if username != '' %}
         <a href="/add-question">Add new Question</a><br>
     {% endif %}
-    <a href="/list">List all questions</a><br>
-    <a href="{{ url_for('show_tags') }}">List all tags</a><br>
-    <a href="/registration">Registration</a><br>
-    {% if username != '' %}
-        <a href="/users">List users</a><br>
-        <a href="/user/{{ user_id }}">My profile</a><br>
-        <a href="/logout">Log out</a>
-    {% else %}
-        <a href="/login">Login</a><br>
+        <br>
+        <br>
+    <a href="/list" class="sidebar">List all questions</a><br>
+        {% if username != '' %}
+            <a href="/users">List users</a><br>
+            <a href="/user/{{ user_id }}">My profile</a><br>
+            <a href="/logout">Log out</a>
+        {% else %}
+            <a href="/registration">Registration</a><br>
+            <a href="/login">Login</a><br>
     {% endif %}
-    <br><form action="/" method="post">
-        <label for="order_by"><strong>Sort by:</strong></label>
-        <input type="radio" name="order_by" value="title">Title
-        <input type="radio" name="order_by" value="message">Message
-        <input type="radio" name="order_by" value="submission_time" checked>Submission Time
-        <input type="radio" name="order_by" value="view_number">View Number
-        <input type="radio" name="order_by" value="vote_number">Vote Number
-        <br><label for="order_direction"><strong>Order direction:</strong></label>
-        <input type="radio" name="order_direction" value="ASC">Ascending
-        <input type="radio" name="order_direction" value="DESC" checked>Descending
-        <br><button type="submit">Submit</button><br>
-    </form>
-    <table>
-        <tr>
-            <th>Submission Time</th>
-            <th>View Number</th>
-            <th>Vote Number</th>
-            <th>Question Title</th>
-            <th>Question Message</th>
-            <th>Image</th>
-            <th>Author</th>
-        </tr>
-        {% for question in latest_questions %}
+    </div>
+    </section>
+    {% endblock %}
+             {% block h1 %}
+            <h1>Ask Mate - All Questions</h1>
+            {% endblock %}
+        {% block content %}
+            <div class="sortorder">
+        <br><form action="/" method="post">
+            <label for="order_by"><strong>Sort by:</strong></label>
+            <label class="container">
+                <input type="radio" name="order_by" value="title">Title
+            <span class="checkmark"></span>
+                </label>
+            <label class="container">
+                <input type="radio" name="order_by" value="message">Message
+                <span class="checkmark"></span>
+                </label>
+            <label class="container">
+                <input type="radio" name="order_by" value="submission_time" checked>Submission Time
+                <span class="checkmark"></span>
+                </label>
+            <label class="container">
+                <input type="radio" name="order_by" value="view_number">View Number
+                <span class="checkmark"></span>
+                </label>
+            <label class="container">
+                <input type="radio" name="order_by" value="vote_number">Vote Number
+                <span class="checkmark"></span>
+                </label>
+            <br><label for="order_direction"><strong>Order direction:</strong></label>
+                <label class="container">
+                <input type="radio" name="order_direction" value="ASC">Ascending
+                <span class="checkmark"></span>
+                </label>
+            <label class="container">
+                <input type="radio" name="order_direction" value="DESC" checked>Descending
+                <span class="checkmark"></span>
+                </label>
+            <br><button type="submit" class="btn">Submit</button><br>
+                <br>
+        </form>
+            </div>
+        <table class="table table-hover">
+            <tr>
+                <th>Submission Time</th>
+                <th>View Number</th>
+                <th>Vote Number</th>
+                <th>Question Title</th>
+                <th>Question Message</th>
+                <th>Image</th>
+                <th>Author</th>
+                <th>Upvote</th>
+                <th>Downvote</th>
+                <th>Delete</th>
+            </tr>
+            {% for question in latest_questions %}
         <tr>
         <td>{{ question.submission_time }}</td>
         <td>{{ question.view_number }}</td>
@@ -51,15 +91,15 @@
             {% endif %}
         <td>{{ question.username }}</td>
         <td>
-            <a href="/question/{{ question["id"] }}/delete">Delete</a>
-        </td>
-        <td>
-            <a href="/question/{{ question["id"] }}/vote-up">Upvote</a>
-        </td>
-        <td>
-            <a href="/question/{{ question["id"] }}/vote-down">Downvote</a>
-        </td>
+                <a href="/question/{{ question["id"] }}/vote-up"><i class="fa-solid fa-thumbs-up"></i></a>
+            </td>
+            <td>
+                <a href="/question/{{ question["id"] }}/vote-down"><i class="fa-solid fa-thumbs-down"></i></a>
+            </td>
+            <td>
+                <a href="/question/{{ question["id"] }}/delete"><i class="fa-solid fa-trash-can"></i></a>
+            </td>
         </tr>
         {% endfor %}
-    </table>
-{% endblock %}
+        </table>
+    {% endblock %}

@@ -1,8 +1,24 @@
 {% extends 'skeleton.html' %}
 {% block title %}Question nr. {{ question_id}}{% endblock %}
-{% block body %}
+    {% block sidebar %}
+    <section>
+    <div class="menu">
+    Fun fact about css! <br>
+        It's a pain in the ass if you have tables in html.
+    </div>
+    </section>
+{% endblock %}
+    {% block h1 %}
     <h1>Question nr. {{ question_id}}</h1>
+    {% endblock %}
+{% block content %}
+    <br>
+    <br>
     <strong>Tags: </strong>
+    <br>
+    <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
+    <br>
+    <strong><h3>Question Title:</h3></strong>
     {% for tag in all_tags_for_question %}
         <p class="tag">{{ tag.name }} <a href="/question/{{ question_id }}/tag/{{ tag.id }}/delete"><i class="fa fa-times"></i></a> </p>
     {% endfor %}
@@ -10,9 +26,12 @@
     <a href="{{ url_for('show_tags') }}">List all tags</a><br>
     <br>
     <strong>{{ question["title"]}}</strong>
+    <strong><h3>Question message:</h3></strong>
     <p>{{ question["message"]}}</p><br>
+    <br>
     <a href="/question/{{ question_id }}/new-tag">Add tag</a><br>
     <a href="/question/{{ question_id}}/edit">Edit Question</a><br>
+    <br>
     <br>
     <h2>Answers</h2>
     {%  if username != '' %}
@@ -20,8 +39,10 @@
     {% endif %}
     <table>
         <tr>
+            <th>ID</th>
             <th>Submission Time</th>
             <th>Vote Number</th>
+            <th>Question ID</th>
             <th>Answer Message</th>
             <th>Image</th>
             <th>Author</th>

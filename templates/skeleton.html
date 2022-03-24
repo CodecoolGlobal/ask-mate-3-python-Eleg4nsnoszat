@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"/>
         <link rel="stylesheet" href="{{url_for('static',filename = 'style.css')}}">
         <meta charset="UTF-8">
-        {% block header %}
+        <div class="title">
         <title>Ask Mate | {% block title %}{% endblock %}</title>
-        {% endblock %}
+        </div>
     </head>
-    <body>
-        {% block body %}
-
+<body>
+    <div class="h1">
+        {% block h1 %}
         {% endblock %}
-        <footer>
-            {% block footer %}
+    </div>
+<div class="webpage">
 
-            {% endblock %}
-        </footer>
-    </body>
+    <div class="sidebar">
+        <div class="menu">
+
+        </div>
+    {% block sidebar %}
+    {% endblock %}
+    </div>
+    <!-- Page Content -->
+<div class="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+    </div>
+</body>
 </html>
