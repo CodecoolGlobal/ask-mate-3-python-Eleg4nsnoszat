@@ -54,7 +54,8 @@ CREATE TABLE answer (
     message text,
     image text,
     author_id integer,
-    username text
+    username text,
+    accepted boolean
 );
 
 DROP TABLE IF EXISTS public.comment;

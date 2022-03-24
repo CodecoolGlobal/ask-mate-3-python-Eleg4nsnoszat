@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import data_manager
+import bonus_questions
 import os
 from werkzeug.utils import secure_filename
 import time
@@ -77,16 +78,32 @@ def show_question_answers(question_id):
     question = data_manager.get_question_details_by_id(question_id)
     answers = data_manager.get_answers_details_by_question_id(question_id)
     comments = data_manager.get_comments_by_question_id(question_id)
+    user_id = data_manager.get_user_id(session.get('username'))
+    author_id = data_manager.get_author_id_from_question(question_id)
+    verify_id = False
+    if user_id['user_id'] == author_id['author_id']:
+        verify_id = True
     all_tags_for_question = data_manager.get_tags_by_question_id(question_id)
     if request.method == 'GET':
         data_manager.update_view_number(question_id)
         if 'username' in session:
             username = session['username']
             return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                                   comments=comments, all_tags_for_question=all_tags_for_question, username=username)
+                                   comments=comments, all_tags_for_question=all_tags_for_question, username=username,
+                                   verify_id=verify_id)
         else:
             return render_template('show_id_question.html', question=question, question_id=question_id, answers=answers,
-                                   comments=comments, all_tags_for_question=all_tags_for_question, username='')
+                                   comments=comments, all_tags_for_question=all_tags_for_question, username='',
+                                   verify_id=verify_id)
+    if request.method == 'POST':
+        answer_id = int(request.form.get("answer_id"))
+        for answer in answers:
+            if answer['id'] == answer_id:
+                if answer['accepted']:
+                    data_manager.update_accepted(False, answer_id)
+                else:
+                    data_manager.update_accepted(True, answer_id)
+        return redirect('/question/' + str(question['id']))
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -388,6 +405,12 @@ def list_users():
         return render_template("users.html", users_info=users_info)
     else:
         return redirect(url_for("main_page"))
+
+
+@app.route("/bonus-questions")
+def bonus_questions_list():
+    questions = bonus_questions.SAMPLE_QUESTIONS
+    return render_template("bonus_questions.html", questions=questions)
 
 
 if __name__ == "__main__":

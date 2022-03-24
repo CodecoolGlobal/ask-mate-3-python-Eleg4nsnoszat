@@ -119,7 +119,7 @@ def update_question(cursor, question_id, title, message, image):
 def delete_question_image(cursor, question_id):
     query = """UPDATE question
                 SET image = NULL
-                WHERE id = %(question_id)"""
+                WHERE id = %(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
 
 
@@ -393,3 +393,26 @@ def gain_reputation(cursor, author_id, points):
     SET reputation = reputation + %(points)s
     WHERE user_id = %(author_id)s"""
     cursor.execute(query, {'author_id': author_id, 'points': points})
+
+
+@connection.connection_handler
+def get_author_id_from_question(cursor, question_id):
+    query = """SELECT author_id FROM question
+            WHERE id = %(question_id)s"""
+    cursor.execute(query, {"question_id": question_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_id(cursor, username):
+    query = """SELECT user_id FROM users
+                WHERE username = %(username)s"""
+    cursor.execute(query, {'username': username})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def update_accepted(cursor, accepted_value, answer_id):
+    query = """UPDATE answer SET accepted = %(accepted_value)s
+                WHERE id = %(answer_id)s"""
+    cursor.execute(query, {'accepted_value': accepted_value, 'answer_id': answer_id})

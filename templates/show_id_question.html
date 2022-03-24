@@ -83,6 +83,24 @@
         <td>
             <a href="/answer/{{ answer_item.get('id') }}/edit"><i class="fa-solid fa-pen-to-square"></i></a>
         </td>
+        <td>
+        <form method="post" action="/question/{{ question_id }}">
+        <input type="hidden" value="{{ answer_item.get('id') }}" name="answer_id">
+        {% if answer_item.get('accepted')%}
+            {% if verify_id %}
+                <button style="background-color: green" onClick = "changeButtonColor(this, 'red')">Accept</button>
+            {% else %}
+                <button id="btn" type="submit" style="background-color: green" disabled>Accept</button>
+            {% endif %}
+        {% else %}
+            {% if verify_id %}
+                <button style="background-color: red" onClick = "changeButtonColor(this, 'green')">Accept</button>
+            {% else %}
+                <button id="btn" type="submit" style="background-color: red" disabled>Accept</button>
+            {% endif %}
+        {% endif %}
+        </form>
+        </td>
         </tr>
         {% endfor %}
     </table>
@@ -108,4 +126,11 @@
             </tr>
         {% endfor %}
     </table>
+    <br>
+    <a href="/">Back to main Page</a>
+    <script>
+                function changeButtonColor(e, color) {
+                e.style.backgroundColor = color;
+                }
+    </script>
 {% endblock %}
