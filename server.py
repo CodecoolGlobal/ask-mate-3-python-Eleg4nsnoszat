@@ -98,11 +98,13 @@ def show_question_answers(question_id):
     if request.method == 'POST':
         answer_id = int(request.form.get("answer_id"))
         for answer in answers:
+            author_id = answer['author_id']
             if answer['id'] == answer_id:
                 if answer['accepted']:
                     data_manager.update_accepted(False, answer_id)
                 else:
                     data_manager.update_accepted(True, answer_id)
+                    data_manager.gain_reputation(author_id, 15)
         return redirect('/question/' + str(question['id']))
 
 
@@ -386,7 +388,6 @@ def user_page(user_id):
     comments_num = data_manager.get_num_of_user_comments(user_id)
     comments_num = comments_num['user_comments']
     user_comments = data_manager.get_user_comments_by_user_id(user_id)
-    print(user_comments)
     return render_template('user-page.html', user_data=user_data, asked_questions_num=asked_questions_num,
                            asked_questions=asked_questions, user_answers_num=user_answers_num,
                            user_answers=user_answers, comments_num=comments_num, user_comments=user_comments)
