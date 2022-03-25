@@ -81,8 +81,9 @@ def show_question_answers(question_id):
     user_id = data_manager.get_user_id(session.get('username'))
     author_id = data_manager.get_author_id_from_question(question_id)
     verify_id = False
-    if user_id['user_id'] == author_id['author_id']:
-        verify_id = True
+    if user_id:
+        if user_id['user_id'] == author_id['author_id']:
+            verify_id = True
     all_tags_for_question = data_manager.get_tags_by_question_id(question_id)
     if request.method == 'GET':
         data_manager.update_view_number(question_id)
