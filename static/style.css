@@ -13,7 +13,7 @@ a:active {
 
 .sidebar{
   width: 10%;
-  background-color: #C5D3CD;
+  background-color: #F1E0D2;
 	color: black;
 	padding: 3px 3px 3px;
 	font-family: 'Montserrat';
@@ -26,7 +26,7 @@ a:active {
 .content{
     overflow-y: scroll;
     max-height: 100%;
-  background-color: #E7E0E4;
+  background-color: #F6EDE6;
 	font-family: 'Montserrat';
     width: 90%;
 }
@@ -63,6 +63,7 @@ th {
 	display: flex;
 	background-color: #000000;
 	color: #C5D3CD;
+    font-family: 'Montserrat';
 	text-align: center;
 }
 
